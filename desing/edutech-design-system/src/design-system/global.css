@@ -1,0 +1,453 @@
+/* ============================================================
+   MasterEduTech Design System — Global CSS Custom Properties
+   ============================================================ */
+
+/* ---------- Color Primitives ---------- */
+:root {
+  /* Purple scale */
+  --purple-50: #f5f0ff;
+  --purple-100: #ede0ff;
+  --purple-200: #d4b8ff;
+  --purple-300: #b48aff;
+  --purple-400: #9a5bff;
+  --purple-500: #7c3aed;
+  --purple-600: #6020cc;
+  --purple-700: #4b16a8;
+  --purple-800: #22105d;
+  --purple-900: #140a3c;
+
+  /* Mint scale */
+  --mint-50: #edfaf5;
+  --mint-100: #c7f4e3;
+  --mint-200: #9fecd1;
+  --mint-300: #83e6c3;
+  --mint-400: #52d4a8;
+  --mint-500: #2abd8d;
+  --mint-600: #1e9b73;
+  --mint-700: #167a5b;
+
+  /* Semantic */
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #7c3aed;
+
+  /* ---------- Dark Mode (Default) ---------- */
+
+  /* Backgrounds */
+  --c-bg: #08051a;
+  --c-bg-secondary: #0c143b;
+  --c-dot-grid: rgba(124, 58, 237, 0.08);
+
+  /* Text */
+  --c-text-1: #ffffff;
+  --c-text-2: rgba(255, 255, 255, 0.55);
+  --c-text-3: rgba(255, 255, 255, 0.30);
+  --c-text-4: rgba(255, 255, 255, 0.15);
+  --c-text-purple: rgba(156, 107, 255, 0.85);
+  --c-text-mint: #83e6c3;
+
+  /* Glass surfaces */
+  --c-glass-bg: rgba(255, 255, 255, 0.08);
+  --c-glass-bg-sm: rgba(255, 255, 255, 0.04);
+  --c-glass-bg-lg: rgba(255, 255, 255, 0.14);
+  --c-glass-bg-purple: rgba(124, 58, 237, 0.15);
+  --c-glass-bg-mint: rgba(131, 230, 195, 0.10);
+
+  /* Borders */
+  --c-border: rgba(255, 255, 255, 0.10);
+  --c-border-sm: rgba(255, 255, 255, 0.06);
+  --c-border-lg: rgba(255, 255, 255, 0.18);
+  --c-border-purple: rgba(124, 58, 237, 0.35);
+  --c-border-mint: rgba(131, 230, 195, 0.28);
+
+  /* Shadows */
+  --c-shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.20);
+  --c-shadow-md: 0 4px 24px rgba(0, 0, 0, 0.25);
+  --c-shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.30);
+  --c-shadow-glow: 0 0 28px rgba(124, 58, 237, 0.38), 0 8px 24px rgba(0, 0, 0, 0.30);
+  --c-shadow-mint: 0 0 28px rgba(131, 230, 195, 0.28), 0 8px 24px rgba(0, 0, 0, 0.25);
+
+  /* Gradients */
+  --gradient-hero: linear-gradient(135deg, #08051a 0%, #150830 50%, #0c143b 100%);
+  --gradient-btn-primary: linear-gradient(135deg, #7c3aed 0%, #6020cc 100%);
+  --gradient-btn-primary-hover: linear-gradient(135deg, #9a5bff 0%, #7c3aed 100%);
+  --gradient-btn-mint: linear-gradient(135deg, #83e6c3 0%, #52d4a8 100%);
+  --gradient-glass-purple: linear-gradient(135deg, rgba(124, 58, 237, 0.25) 0%, rgba(96, 32, 204, 0.15) 100%);
+  --gradient-glass-mint: linear-gradient(135deg, rgba(131, 230, 195, 0.20) 0%, rgba(82, 212, 168, 0.10) 100%);
+  --gradient-shimmer: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+
+  /* Input */
+  --c-input-bg: rgba(255, 255, 255, 0.06);
+  --c-input-border: rgba(255, 255, 255, 0.12);
+  --c-input-border-focus: rgba(124, 58, 237, 0.70);
+  --c-input-placeholder: rgba(255, 255, 255, 0.30);
+  --c-input-text: #ffffff;
+  --c-input-ring: rgba(124, 58, 237, 0.25);
+
+  /* Buttons */
+  --c-btn-secondary-bg: rgba(255, 255, 255, 0.08);
+  --c-btn-secondary-border: rgba(255, 255, 255, 0.14);
+  --c-btn-secondary-hover: rgba(255, 255, 255, 0.13);
+  --c-btn-ghost-hover: rgba(255, 255, 255, 0.06);
+  --c-btn-danger-bg: rgba(239, 68, 68, 0.18);
+  --c-btn-danger-border: rgba(239, 68, 68, 0.40);
+  --c-btn-danger-text: #f87171;
+  --c-btn-success-bg: rgba(34, 197, 94, 0.15);
+  --c-btn-success-border: rgba(34, 197, 94, 0.35);
+  --c-btn-success-text: #4ade80;
+
+  /* Badges */
+  --c-badge-purple-bg: rgba(124, 58, 237, 0.20);
+  --c-badge-purple-border: rgba(124, 58, 237, 0.45);
+  --c-badge-purple-text: #b48aff;
+  --c-badge-mint-bg: rgba(131, 230, 195, 0.15);
+  --c-badge-mint-border: rgba(131, 230, 195, 0.40);
+  --c-badge-mint-text: #52d4a8;
+  --c-badge-white-bg: rgba(255, 255, 255, 0.10);
+  --c-badge-white-border: rgba(255, 255, 255, 0.20);
+  --c-badge-white-text: rgba(255, 255, 255, 0.85);
+  --c-badge-success-bg: rgba(34, 197, 94, 0.15);
+  --c-badge-success-border: rgba(34, 197, 94, 0.35);
+  --c-badge-success-text: #4ade80;
+  --c-badge-warning-bg: rgba(245, 158, 11, 0.15);
+  --c-badge-warning-border: rgba(245, 158, 11, 0.35);
+  --c-badge-warning-text: #fbbf24;
+  --c-badge-error-bg: rgba(239, 68, 68, 0.15);
+  --c-badge-error-border: rgba(239, 68, 68, 0.35);
+  --c-badge-error-text: #f87171;
+  --c-badge-outline-bg: transparent;
+  --c-badge-outline-border: rgba(255, 255, 255, 0.25);
+  --c-badge-outline-text: rgba(255, 255, 255, 0.70);
+
+  /* Avatar */
+  --c-avatar-bg: rgba(124, 58, 237, 0.25);
+  --c-avatar-text: #b48aff;
+  --c-avatar-ring: rgba(124, 58, 237, 0.60);
+  --c-avatar-border: rgba(255, 255, 255, 0.12);
+
+  /* Checkbox */
+  --c-checkbox-bg: rgba(255, 255, 255, 0.06);
+  --c-checkbox-border: rgba(255, 255, 255, 0.20);
+  --c-checkbox-checked-bg: linear-gradient(135deg, #7c3aed 0%, #6020cc 100%);
+  --c-checkbox-checked-border: transparent;
+
+  /* Toggle */
+  --c-toggle-bg: rgba(255, 255, 255, 0.12);
+  --c-toggle-checked-bg: linear-gradient(135deg, #7c3aed 0%, #6020cc 100%);
+  --c-toggle-thumb: #ffffff;
+
+  /* Select */
+  --c-select-bg: rgba(255, 255, 255, 0.06);
+  --c-select-border: rgba(255, 255, 255, 0.12);
+  --c-select-text: #ffffff;
+
+  /* Notification */
+  --c-notif-info-bg: rgba(124, 58, 237, 0.18);
+  --c-notif-info-border: rgba(124, 58, 237, 0.40);
+  --c-notif-info-icon: #9a5bff;
+  --c-notif-success-bg: rgba(34, 197, 94, 0.15);
+  --c-notif-success-border: rgba(34, 197, 94, 0.35);
+  --c-notif-success-icon: #4ade80;
+  --c-notif-warning-bg: rgba(245, 158, 11, 0.15);
+  --c-notif-warning-border: rgba(245, 158, 11, 0.35);
+  --c-notif-warning-icon: #fbbf24;
+  --c-notif-error-bg: rgba(239, 68, 68, 0.15);
+  --c-notif-error-border: rgba(239, 68, 68, 0.35);
+  --c-notif-error-icon: #f87171;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-size-xs: 11px;
+  --font-size-sm: 13px;
+  --font-size-base: 15px;
+  --font-size-md: 17px;
+  --font-size-lg: 20px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 30px;
+  --font-size-3xl: 38px;
+  --font-size-4xl: 48px;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* Border Radius */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+  --radius-full: 9999px;
+
+  /* Animation */
+  --anim-fast: 150ms;
+  --anim-normal: 250ms;
+  --anim-slow: 400ms;
+  --anim-slower: 600ms;
+  --anim-slowest: 800ms;
+  --anim-spin-slow: 2000ms;
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---------- Light Mode Overrides ---------- */
+[data-theme='light'] {
+  --c-bg: #f5f0ff;
+  --c-bg-secondary: #ede0ff;
+  --c-dot-grid: rgba(124, 58, 237, 0.05);
+
+  --c-text-1: #1a0a3d;
+  --c-text-2: rgba(26, 10, 61, 0.60);
+  --c-text-3: rgba(26, 10, 61, 0.35);
+  --c-text-4: rgba(26, 10, 61, 0.18);
+  --c-text-purple: #6020cc;
+  --c-text-mint: #1e9b73;
+
+  --c-glass-bg: rgba(255, 255, 255, 0.70);
+  --c-glass-bg-sm: rgba(255, 255, 255, 0.50);
+  --c-glass-bg-lg: rgba(255, 255, 255, 0.85);
+  --c-glass-bg-purple: rgba(124, 58, 237, 0.08);
+  --c-glass-bg-mint: rgba(131, 230, 195, 0.15);
+
+  --c-border: rgba(124, 58, 237, 0.15);
+  --c-border-sm: rgba(124, 58, 237, 0.08);
+  --c-border-lg: rgba(124, 58, 237, 0.22);
+  --c-border-purple: rgba(124, 58, 237, 0.35);
+  --c-border-mint: rgba(30, 155, 115, 0.30);
+
+  --c-shadow-sm: 0 2px 12px rgba(124, 58, 237, 0.10);
+  --c-shadow-md: 0 4px 24px rgba(124, 58, 237, 0.14);
+  --c-shadow-lg: 0 8px 40px rgba(124, 58, 237, 0.18);
+  --c-shadow-glow: 0 0 28px rgba(124, 58, 237, 0.25), 0 8px 24px rgba(124, 58, 237, 0.12);
+  --c-shadow-mint: 0 0 28px rgba(30, 155, 115, 0.20), 0 8px 24px rgba(30, 155, 115, 0.10);
+
+  --c-input-bg: rgba(255, 255, 255, 0.80);
+  --c-input-border: rgba(124, 58, 237, 0.20);
+  --c-input-border-focus: rgba(124, 58, 237, 0.70);
+  --c-input-placeholder: rgba(26, 10, 61, 0.35);
+  --c-input-text: #1a0a3d;
+  --c-input-ring: rgba(124, 58, 237, 0.20);
+
+  --c-btn-secondary-bg: rgba(124, 58, 237, 0.08);
+  --c-btn-secondary-border: rgba(124, 58, 237, 0.20);
+  --c-btn-secondary-hover: rgba(124, 58, 237, 0.14);
+  --c-btn-ghost-hover: rgba(124, 58, 237, 0.06);
+
+  --c-badge-white-bg: rgba(255, 255, 255, 0.80);
+  --c-badge-white-border: rgba(124, 58, 237, 0.20);
+  --c-badge-white-text: #1a0a3d;
+  --c-badge-outline-border: rgba(124, 58, 237, 0.30);
+  --c-badge-outline-text: rgba(26, 10, 61, 0.70);
+
+  --c-avatar-bg: rgba(124, 58, 237, 0.12);
+  --c-avatar-text: #6020cc;
+  --c-avatar-ring: rgba(124, 58, 237, 0.40);
+  --c-avatar-border: rgba(124, 58, 237, 0.15);
+
+  --c-checkbox-bg: rgba(255, 255, 255, 0.80);
+  --c-checkbox-border: rgba(124, 58, 237, 0.30);
+
+  --c-toggle-bg: rgba(124, 58, 237, 0.15);
+
+  --c-select-bg: rgba(255, 255, 255, 0.80);
+  --c-select-border: rgba(124, 58, 237, 0.20);
+  --c-select-text: #1a0a3d;
+
+  --c-notif-info-bg: rgba(124, 58, 237, 0.10);
+  --c-notif-info-border: rgba(124, 58, 237, 0.25);
+  --gradient-shimmer: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.06), transparent);
+}
+
+/* ---------- Base Styles ---------- */
+body {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  color: var(--c-text-1);
+  background-color: var(--c-bg);
+  background-image:
+    radial-gradient(circle at 1px 1px, var(--c-dot-grid) 1px, transparent 0);
+  background-size: 28px 28px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--anim-slow) ease, color var(--anim-slow) ease;
+}
+
+/* ---------- Glass Utility Classes ---------- */
+.glass-sm {
+  background: var(--c-glass-bg-sm);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--c-border-sm);
+  box-shadow: var(--c-shadow-sm);
+  border-radius: var(--radius-md);
+}
+
+.glass {
+  background: var(--c-glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--c-shadow-md);
+  border-radius: var(--radius-md);
+}
+
+.glass-lg {
+  background: var(--c-glass-bg-lg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--c-border-lg);
+  box-shadow: var(--c-shadow-lg);
+  border-radius: var(--radius-lg);
+}
+
+.glass-purple {
+  background: var(--c-glass-bg-purple);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--c-border-purple);
+  box-shadow: var(--c-shadow-glow);
+  border-radius: var(--radius-md);
+}
+
+.glass-mint {
+  background: var(--c-glass-bg-mint);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--c-border-mint);
+  box-shadow: var(--c-shadow-mint);
+  border-radius: var(--radius-md);
+}
+
+/* ---------- @keyframes ---------- */
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 12px rgba(124, 58, 237, 0.70);
+  }
+  50% {
+    opacity: 0.4;
+    box-shadow: 0 0 4px rgba(124, 58, 237, 0.25);
+  }
+}
+
+@keyframes pulse-mint {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 12px rgba(131, 230, 195, 0.70);
+  }
+  50% {
+    opacity: 0.4;
+    box-shadow: 0 0 4px rgba(131, 230, 195, 0.25);
+  }
+}
+
+@keyframes theme-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+@keyframes draw-check {
+  from { stroke-dashoffset: 100; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes bounce-dot {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes logo-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+@keyframes bar-grow {
+  0%, 100% { transform: scaleY(0.3); }
+  50%       { transform: scaleY(1); }
+}
+
+@keyframes fade-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes warning-pulse {
+  0%, 100% { filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.40)); }
+  50%       { filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.90)); }
+}
+
+@keyframes progress-fill {
+  from { width: 0%; }
+  to   { width: var(--progress-target, 75%); }
+}
