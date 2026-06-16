@@ -150,12 +150,3 @@ export const AvatarGroup: React.FC<AvatarGroupProps> = ({
     </div>
   )
 }
-
-const fontSizeMap: Record<AvatarSize, string> = {
-  xs: '9px',
-  sm: '11px',
-  md: '14px',
-  lg: '17px',
-  xl: '22px',
-  '2xl': '28px',
-}
