@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { Logo, LogoMarkOriginal, LogoMarkNegativo, LogoMarkBlue, LogoMarkNavy, LogoAnimatedFloat, LogoAnimatedDraw, LogoAnimatedGlow, LogoAnimatedSpinReveal, LogoAnimatedMorph } from '../components/Logo'
 import { Button } from '../components/Button'
 import { Input, Textarea, Select, Checkbox, Toggle } from '../components/Input'
 import { GlassCard } from '../components/GlassCard'
@@ -48,7 +49,7 @@ const SubSection: React.FC<{ title: string; children: React.ReactNode }> = ({ ti
     <h3 style={{
       margin: '0 0 20px',
       fontWeight: 600,
-      color: 'var(--c-text-purple)',
+      color: 'var(--c-text-blue)',
       textTransform: 'uppercase',
       letterSpacing: '0.08em',
       fontSize: '11px',
@@ -64,7 +65,7 @@ const SubSection: React.FC<{ title: string; children: React.ReactNode }> = ({ ti
 // ============================================================
 
 const RingSpinner: React.FC<{ color?: string; size?: number }> = ({
-  color = '#7c3aed', size = 40,
+  color = '#5291bb', size = 40,
 }) => (
   <svg
     width={size}
@@ -95,7 +96,7 @@ const BounceDots: React.FC = () => (
         style={{
           width: '10px', height: '10px',
           borderRadius: '50%',
-          background: '#7c3aed',
+          background: '#5291bb',
           animation: `bounce-dot 0.6s ease-in-out ${i * 0.12}s infinite`,
           animationFillMode: 'both',
         }}
@@ -138,7 +139,7 @@ const BarLoader: React.FC = () => (
           width: '8px',
           height: '32px',
           borderRadius: '4px',
-          background: i % 2 === 0 ? '#7c3aed' : '#83e6c3',
+          background: i % 2 === 0 ? '#5291bb' : '#83e6c3',
           transformOrigin: 'bottom',
           animation: `bar-grow 0.6s ease-in-out ${i * 0.1}s infinite`,
           animationFillMode: 'both',
@@ -225,7 +226,7 @@ const ProgressBar: React.FC = () => {
             height: '100%',
             width: `${progress}%`,
             borderRadius: 'var(--radius-full)',
-            background: 'linear-gradient(90deg, #7c3aed 0%, #83e6c3 100%)',
+            background: 'linear-gradient(90deg, #5291bb 0%, #83e6c3 100%)',
             animation: `progress-fill 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards`,
             '--progress-target': `${progress}%`,
           } as React.CSSProperties}
@@ -279,9 +280,9 @@ const LogoAnimation: React.FC = () => {
           >
             <circle
               cx="45" cy="45" r="36"
-              stroke="rgba(124,58,237,0.25)"
+              stroke="rgba(82,145,187,0.25)"
               strokeWidth="1"
-              fill="rgba(124,58,237,0.06)"
+              fill="rgba(82,145,187,0.06)"
             />
           </svg>
 
@@ -293,7 +294,7 @@ const LogoAnimation: React.FC = () => {
           >
             <polyline
               points="25,62 25,30 45,52 65,30 65,62"
-              stroke="#7c3aed"
+              stroke="#5291bb"
               strokeWidth="4"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -321,7 +322,7 @@ const LogoAnimation: React.FC = () => {
           }}>
             <span style={{ color: 'var(--c-text-1)' }}>Master</span>
             <span style={{ color: '#83e6c3' }}>Edu</span>
-            <span style={{ color: '#7c3aed' }}>Tech</span>
+            <span style={{ color: '#5291bb' }}>Tech</span>
           </div>
           <div style={{
             fontSize: 'var(--font-size-xs)',
@@ -443,8 +444,8 @@ const AnimatedInfoIcon: React.FC = () => {
       style={{
         width: '64px', height: '64px',
         borderRadius: 'var(--radius-md)',
-        background: 'rgba(124,58,237,0.12)',
-        border: '1px solid rgba(124,58,237,0.30)',
+        background: 'rgba(82,145,187,0.12)',
+        border: '1px solid rgba(82,145,187,0.30)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         cursor: 'pointer',
       }}
@@ -453,9 +454,9 @@ const AnimatedInfoIcon: React.FC = () => {
         width="28" height="28" viewBox="0 0 28 28" fill="none"
         style={hovered ? { animation: 'fade-scale-in 300ms var(--ease-spring) forwards' } : {}}
       >
-        <circle cx="14" cy="14" r="12" stroke="#9a5bff" strokeWidth="1.5" />
-        <path d="M14 13v6" stroke="#9a5bff" strokeWidth="2" strokeLinecap="round" />
-        <circle cx="14" cy="10" r="1" fill="#9a5bff" />
+        <circle cx="14" cy="14" r="12" stroke="#73acd2" strokeWidth="1.5" />
+        <path d="M14 13v6" stroke="#73acd2" strokeWidth="2" strokeLinecap="round" />
+        <circle cx="14" cy="10" r="1" fill="#73acd2" />
       </svg>
     </div>
   )
@@ -543,7 +544,7 @@ const NavItem: React.FC<{ href: string; label: string; active: boolean; emoji?: 
         marginLeft: 'auto',
         width: '4px', height: '4px',
         borderRadius: '50%',
-        background: '#7c3aed',
+        background: '#5291bb',
         flexShrink: 0,
       }} />
     )}
@@ -580,6 +581,7 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
   }, [])
 
   const navItems = [
+    { href: '#logo', label: 'Logo', id: 'logo', emoji: 'L' },
     { href: '#fundamentos', label: 'Fundamentos', id: 'fundamentos', emoji: 'A' },
     { href: '#superficies', label: 'Superficies', id: 'superficies', emoji: 'S' },
     { href: '#componentes', label: 'Componentes', id: 'componentes', emoji: 'C' },
@@ -589,9 +591,9 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
 
   const purpleSwatches = [
     { label: '50', hex: '#f5f0ff' }, { label: '100', hex: '#ede0ff' },
-    { label: '200', hex: '#d4b8ff' }, { label: '300', hex: '#b48aff' },
-    { label: '400', hex: '#9a5bff' }, { label: '500', hex: '#7c3aed' },
-    { label: '600', hex: '#6020cc' }, { label: '700', hex: '#4b16a8' },
+    { label: '200', hex: '#d4b8ff' }, { label: '300', hex: '#73acd2' },
+    { label: '400', hex: '#73acd2' }, { label: '500', hex: '#5291bb' },
+    { label: '600', hex: '#22105d' }, { label: '700', hex: '#4b16a8' },
     { label: '800', hex: '#22105d' }, { label: '900', hex: '#140a3c' },
   ]
 
@@ -606,7 +608,7 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
     { label: 'Success', hex: '#22c55e' },
     { label: 'Warning', hex: '#f59e0b' },
     { label: 'Error', hex: '#ef4444' },
-    { label: 'Info', hex: '#7c3aed' },
+    { label: 'Info', hex: '#5291bb' },
   ]
 
   const typographyScale = [
@@ -664,9 +666,9 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
           <div style={{
             width: '32px', height: '32px',
             borderRadius: '8px',
-            background: 'linear-gradient(135deg, #7c3aed 0%, #6020cc 100%)',
+            background: 'linear-gradient(135deg, #5291bb 0%, #22105d 100%)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 0 12px rgba(124,58,237,0.40)',
+            boxShadow: '0 0 12px rgba(82,145,187,0.40)',
           }}>
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
               <polyline
@@ -681,7 +683,7 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
             <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--c-text-1)', lineHeight: 1 }}>
               <span>Master</span>
               <span style={{ color: '#83e6c3' }}>Edu</span>
-              <span style={{ color: '#9a5bff' }}>Tech</span>
+              <span style={{ color: '#73acd2' }}>Tech</span>
             </div>
             <div style={{ fontSize: '10px', color: 'var(--c-text-3)', marginTop: '2px' }}>Design System</div>
           </div>
@@ -742,15 +744,15 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
       </header>
 
       {/* ---- Main layout ---- */}
-      <div style={
-        {
+      <div style=
+        {{
           display: 'grid',
           gridTemplateColumns: '220px 1fr',
           maxWidth: '1280px',
           margin: '0 auto',
           paddingTop: '60px',
-        }
-      }>
+        }}
+      >
         {/* ---- Sidebar ---- */}
         <aside style={{
           position: 'sticky', top: '60px',
@@ -780,8 +782,8 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
           ))}
 
           <div style={{ marginTop: 'auto', paddingTop: '24px' }}>
-            <GlassCard variant="purple" style={{ padding: '14px' }}>
-              <div style={{ fontSize: 'var(--font-size-xs)', color: 'var(--c-text-purple)', fontWeight: 600, marginBottom: '4px' }}>
+            <GlassCard variant="blue" style={{ padding: '14px' }}>
+              <div style={{ fontSize: 'var(--font-size-xs)', color: 'var(--c-text-blue)', fontWeight: 600, marginBottom: '4px' }}>
                 v1.0.0
               </div>
               <div style={{ fontSize: '11px', color: 'var(--c-text-3)', lineHeight: 1.5 }}>
@@ -797,7 +799,89 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
           style={{ padding: '48px 48px 80px', minWidth: 0 }}
         >
           {/* ===== FUNDAMENTOS ===== */}
-          <Section id="fundamentos" title="Fundamentos" subtitle="Tokens fundamentais de cor, tipografia, espaco e bordas.">
+          
+          <Section id="logo" title="Logo" subtitle="Três versões da marca para cada aplicação e contexto.">
+            <SubSection title="Versão Original — Gradiente">
+              <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap', alignItems: 'center' }}>
+                <div style={{
+                  background: '#0c143b',
+                  borderRadius: '16px',
+                  padding: '32px 48px',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                }}>
+                  <Logo variant="original" size="lg" />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
+                  <LogoMarkOriginal size={72} />
+                  <span style={{ fontSize: '11px', color: 'var(--c-text-3)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Símbolo</span>
+                </div>
+              </div>
+            </SubSection>
+
+            <SubSection title="Versão Negativo — Branca">
+              <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'center' }}>
+                <div style={{
+                  background: '#060a18',
+                  borderRadius: '16px',
+                  padding: '32px 48px',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                }}>
+                  <Logo variant="negativo" size="lg" />
+                </div>
+                <div style={{
+                  background: '#0c143b',
+                  borderRadius: '16px',
+                  padding: '24px 36px',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                }}>
+                  <Logo variant="negativo" size="md" />
+                </div>
+              </div>
+            </SubSection>
+
+            <SubSection title="Tons de Azul">
+              <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'center' }}>
+                <div style={{
+                  background: '#f6f6f8',
+                  borderRadius: '16px',
+                  padding: '32px 48px',
+                  border: '1px solid rgba(82,145,187,0.15)',
+                }}>
+                  <Logo variant="blue" size="lg" />
+                </div>
+                <div style={{
+                  background: '#ffffff',
+                  borderRadius: '16px',
+                  padding: '32px 48px',
+                  border: '1px solid rgba(12,20,59,0.10)',
+                }}>
+                  <Logo variant="navy" size="lg" />
+                </div>
+              </div>
+            </SubSection>
+
+            <SubSection title="Escala de Tamanhos">
+              <div style={{
+                display: 'flex',
+                gap: '24px',
+                flexWrap: 'wrap',
+                alignItems: 'flex-end',
+                padding: '24px',
+                background: 'rgba(255,255,255,0.04)',
+                borderRadius: '16px',
+                border: '1px solid rgba(255,255,255,0.08)',
+              }}>
+                {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map(s => (
+                  <div key={s} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                    <Logo variant="original" size={s} />
+                    <span style={{ fontSize: '10px', color: 'var(--c-text-3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{s}</span>
+                  </div>
+                ))}
+              </div>
+            </SubSection>
+          </Section>
+
+<Section id="fundamentos" title="Fundamentos" subtitle="Tokens fundamentais de cor, tipografia, espaco e bordas.">
 
             <SubSection title="Escala Purple">
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(10, 1fr)', gap: '8px' }}>
@@ -864,7 +948,7 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                     <div style={{
                       width: `${Math.min(s.px * 3, 240)}px`, height: '14px',
                       borderRadius: '3px',
-                      background: 'linear-gradient(90deg, #7c3aed, #83e6c3)',
+                      background: 'linear-gradient(90deg, #5291bb, #83e6c3)',
                       opacity: 0.7,
                     }} />
                     <span style={{ fontSize: '11px', color: 'var(--c-text-3)', fontFamily: 'var(--font-mono)' }}>
@@ -900,16 +984,16 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
 
             <SubSection title="Vidro — 5 Niveis">
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px' }}>
-                {(['sm', 'default', 'lg', 'purple', 'mint'] as const).map(variant => (
+                {(['sm', 'default', 'lg', 'blue', 'mint'] as const).map(variant => (
                   <GlassCard key={variant} variant={variant} hoverable>
                     <div style={{ fontSize: '11px', fontFamily: 'var(--font-mono)', color: 'var(--c-text-3)', marginBottom: '8px' }}>
                       .glass{variant !== 'default' ? `-${variant}` : ''}
                     </div>
                     <div style={{ fontSize: 'var(--font-size-sm)', fontWeight: 600, color: 'var(--c-text-1)', marginBottom: '4px' }}>
-                      {variant === 'sm' ? 'Glass SM' : variant === 'default' ? 'Glass' : variant === 'lg' ? 'Glass LG' : variant === 'purple' ? 'Glass Purple' : 'Glass Mint'}
+                      {variant === 'sm' ? 'Glass SM' : variant === 'default' ? 'Glass' : variant === 'lg' ? 'Glass LG' : variant === 'blue' ? 'Glass Purple' : 'Glass Mint'}
                     </div>
                     <div style={{ fontSize: 'var(--font-size-xs)', color: 'var(--c-text-3)', lineHeight: 1.5 }}>
-                      {variant === 'sm' ? 'blur(8px) · 4%' : variant === 'default' ? 'blur(16px) · 8%' : variant === 'lg' ? 'blur(24px) · 14%' : variant === 'purple' ? 'blur(20px) · purple' : 'blur(20px) · mint'}
+                      {variant === 'sm' ? 'blur(8px) · 4%' : variant === 'default' ? 'blur(16px) · 8%' : variant === 'lg' ? 'blur(24px) · 14%' : variant === 'blue' ? 'blur(20px) · purple' : 'blur(20px) · mint'}
                     </div>
                   </GlassCard>
                 ))}
@@ -970,7 +1054,7 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
 
             <SubSection title="Badges">
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center', marginBottom: '10px' }}>
-                <Badge variant="purple">Novo</Badge>
+                <Badge variant="blue">Novo</Badge>
                 <Badge variant="mint">Em Destaque</Badge>
                 <Badge variant="white">Padrao</Badge>
                 <Badge variant="success">Concluido</Badge>
@@ -979,13 +1063,13 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                 <Badge variant="outline">Outline</Badge>
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center', marginBottom: '10px' }}>
-                <Badge variant="purple" dot>Ao Vivo</Badge>
+                <Badge variant="blue" dot>Ao Vivo</Badge>
                 <Badge variant="mint" dot>Online</Badge>
                 <Badge variant="success" dot>Disponivel</Badge>
                 <Badge variant="error" dot>Offline</Badge>
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
-                <Badge variant="purple" size="sm">SM Purple</Badge>
+                <Badge variant="blue" size="sm">SM Purple</Badge>
                 <Badge variant="mint" size="sm">SM Mint</Badge>
                 <Badge variant="warning" size="sm">SM Warning</Badge>
               </div>
@@ -1029,8 +1113,8 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                   <Button variant="primary" size="sm" fullWidth>Acessar</Button>
                 </GlassCard>
 
-                <GlassCard variant="purple" hoverable>
-                  <Badge variant="purple" size="sm" style={{ marginBottom: '12px' }}>Destaque</Badge>
+                <GlassCard variant="blue" hoverable>
+                  <Badge variant="blue" size="sm" style={{ marginBottom: '12px' }}>Destaque</Badge>
                   <div style={{ fontSize: 'var(--font-size-md)', fontWeight: 700, color: 'var(--c-text-1)', marginBottom: '8px' }}>
                     TypeScript Pro
                   </div>
@@ -1236,7 +1320,7 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
             </SubSection>
 
             <SubSection title="Logo Animation">
-              <GlassCard variant="purple" style={{ display: 'flex', justifyContent: 'center', padding: '48px' }}>
+              <GlassCard variant="blue" style={{ display: 'flex', justifyContent: 'center', padding: '48px' }}>
                 <LogoAnimation />
               </GlassCard>
             </SubSection>
@@ -1296,7 +1380,7 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                         { name: 'theme-pop', dur: '250ms', ease: 'ease', uso: 'Theme toggle' },
                       ].map((row, i, arr) => (
                         <tr key={row.name} style={{ borderBottom: i < arr.length - 1 ? '1px solid var(--c-border-sm)' : 'none' }}>
-                          <td style={{ padding: '10px 14px', fontFamily: 'var(--font-mono)', color: 'var(--c-text-purple)', fontSize: '12px' }}>{row.name}</td>
+                          <td style={{ padding: '10px 14px', fontFamily: 'var(--font-mono)', color: 'var(--c-text-blue)', fontSize: '12px' }}>{row.name}</td>
                           <td style={{ padding: '10px 14px', color: 'var(--c-text-2)', fontFamily: 'var(--font-mono)', fontSize: '12px' }}>{row.dur}</td>
                           <td style={{ padding: '10px 14px', color: 'var(--c-text-2)' }}>{row.ease}</td>
                           <td style={{ padding: '10px 14px', color: 'var(--c-text-3)' }}>{row.uso}</td>
@@ -1307,6 +1391,37 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                 </div>
               </GlassCard>
             </SubSection>
+          
+            <SubSection title="Animações de Logo">
+              <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+                {[
+                  { label: 'Float',       node: <LogoAnimatedFloat size={72} /> },
+                  { label: 'Draw',        node: <LogoAnimatedDraw size={72} /> },
+                  { label: 'Glow Pulse',  node: <LogoAnimatedGlow size={72} /> },
+                  { label: 'Spin Reveal', node: <LogoAnimatedSpinReveal size={72} /> },
+                  { label: 'Morph',       node: <LogoAnimatedMorph size={72} /> },
+                ].map(({ label, node }) => (
+                  <div
+                    key={label}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: '12px',
+                      padding: '24px',
+                      background: 'var(--c-glass-bg)',
+                      border: '1px solid var(--c-border)',
+                      borderRadius: '16px',
+                      minWidth: '140px',
+                    }}
+                  >
+                    {node}
+                    <span style={{ fontSize: '11px', color: 'var(--c-text-2)', fontFamily: 'var(--font-mono)' }}>{label}</span>
+                  </div>
+                ))}
+              </div>
+            </SubSection>
+
           </Section>
         </main>
       </div>

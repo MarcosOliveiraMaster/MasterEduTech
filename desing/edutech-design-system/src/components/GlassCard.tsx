@@ -1,6 +1,6 @@
 import React from 'react'
 
-type CardVariant = 'sm' | 'default' | 'lg' | 'purple' | 'mint'
+type CardVariant = 'sm' | 'default' | 'lg' | 'blue' | 'mint'
 
 interface GlassCardProps {
   variant?: CardVariant
@@ -12,18 +12,13 @@ interface GlassCardProps {
 }
 
 export const GlassCard: React.FC<GlassCardProps> = ({
-  variant = 'default',
-  children,
-  className,
-  style,
-  onClick,
-  hoverable = false,
+  variant = 'default', children, className, style, onClick, hoverable = false,
 }) => {
   const variantClass: Record<CardVariant, string> = {
     sm: 'glass-sm',
     default: 'glass',
     lg: 'glass-lg',
-    purple: 'glass-purple',
+    blue: 'glass-blue',
     mint: 'glass-mint',
   }
 
@@ -31,7 +26,7 @@ export const GlassCard: React.FC<GlassCardProps> = ({
     sm: '1rem',
     default: '1.5rem',
     lg: '2.5rem',
-    purple: '1.5rem',
+    blue: '1.5rem',
     mint: '1.5rem',
   }
 

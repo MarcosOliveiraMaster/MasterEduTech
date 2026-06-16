@@ -164,10 +164,7 @@ export const Textarea: React.FC<TextareaProps> = ({
 
 // ---- Select ----
 
-interface SelectOption {
-  value: string
-  label: string
-}
+interface SelectOption { value: string; label: string }
 
 interface SelectProps {
   label?: string
@@ -254,10 +251,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       }}
     >
       <input
-        id={id}
-        type="checkbox"
-        checked={checked}
-        disabled={disabled}
+        id={id} type="checkbox" checked={checked} disabled={disabled}
         onChange={e => onChange?.(e.target.checked)}
         style={{ display: 'none' }}
       />
@@ -266,7 +260,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         borderRadius: '5px',
         border: `1.5px solid ${checked ? 'transparent' : 'var(--c-checkbox-border)'}`,
-        background: checked ? 'linear-gradient(135deg, #7c3aed 0%, #6020cc 100%)' : 'var(--c-checkbox-bg)',
+        background: checked ? 'linear-gradient(135deg, #5291bb 0%, #22105d 100%)' : 'var(--c-checkbox-bg)',
         transition: 'all 200ms ease',
       }}>
         {checked && (
@@ -313,10 +307,7 @@ export const Toggle: React.FC<ToggleProps> = ({
       }}
     >
       <input
-        id={id}
-        type="checkbox"
-        checked={checked}
-        disabled={disabled}
+        id={id} type="checkbox" checked={checked} disabled={disabled}
         onChange={e => onChange?.(e.target.checked)}
         style={{ display: 'none' }}
       />
@@ -324,7 +315,7 @@ export const Toggle: React.FC<ToggleProps> = ({
         position: 'relative', width: '38px', height: '22px', flexShrink: 0,
         borderRadius: '9999px',
         background: checked
-          ? 'linear-gradient(135deg, #7c3aed 0%, #6020cc 100%)'
+          ? 'linear-gradient(135deg, #5291bb 0%, #22105d 100%)'
           : 'var(--c-toggle-bg)',
         transition: 'background 250ms ease',
       }}>
