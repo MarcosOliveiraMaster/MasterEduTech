@@ -47,7 +47,6 @@ const SubSection: React.FC<{ title: string; children: React.ReactNode }> = ({ ti
   <div style={{ marginBottom: '40px' }}>
     <h3 style={{
       margin: '0 0 20px',
-      fontSize: 'var(--font-size-md)',
       fontWeight: 600,
       color: 'var(--c-text-purple)',
       textTransform: 'uppercase',
