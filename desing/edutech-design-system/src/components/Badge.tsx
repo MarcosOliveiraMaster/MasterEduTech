@@ -1,6 +1,6 @@
 import React from 'react'
 
-type BadgeVariant = 'purple' | 'mint' | 'white' | 'success' | 'warning' | 'error' | 'outline'
+type BadgeVariant = 'blue' | 'mint' | 'white' | 'success' | 'warning' | 'error' | 'outline'
 type BadgeSize = 'sm' | 'md'
 
 interface BadgeProps {
@@ -12,10 +12,10 @@ interface BadgeProps {
 }
 
 const variantStyles: Record<BadgeVariant, React.CSSProperties> = {
-  purple: {
-    background: 'var(--c-badge-purple-bg)',
-    border: '1px solid var(--c-badge-purple-border)',
-    color: 'var(--c-badge-purple-text)',
+  blue: {
+    background: 'var(--c-badge-blue-bg)',
+    border: '1px solid var(--c-badge-blue-border)',
+    color: 'var(--c-badge-blue-text)',
   },
   mint: {
     background: 'var(--c-badge-mint-bg)',
@@ -55,7 +55,7 @@ const sizeStyles: Record<BadgeSize, React.CSSProperties> = {
 }
 
 const dotColor: Record<BadgeVariant, string> = {
-  purple: '#9a5bff',
+  blue: '#5291bb',
   mint: '#52d4a8',
   white: 'rgba(255,255,255,0.70)',
   success: '#4ade80',
@@ -65,11 +65,7 @@ const dotColor: Record<BadgeVariant, string> = {
 }
 
 export const Badge: React.FC<BadgeProps> = ({
-  variant = 'purple',
-  size = 'md',
-  children,
-  dot = false,
-  style,
+  variant = 'blue', size = 'md', children, dot = false, style,
 }) => {
   return (
     <span style={{
@@ -86,8 +82,7 @@ export const Badge: React.FC<BadgeProps> = ({
     }}>
       {dot && (
         <span style={{
-          width: '6px',
-          height: '6px',
+          width: '6px', height: '6px',
           borderRadius: '50%',
           background: dotColor[variant],
           flexShrink: 0,
