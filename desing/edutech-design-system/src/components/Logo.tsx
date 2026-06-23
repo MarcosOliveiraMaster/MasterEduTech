@@ -104,7 +104,16 @@ export const Logo: React.FC<LogoProps> = ({ variant = 'original', size = 'md', s
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap, ...style }}>
-      <Mark size={markSize} />
+      {variant === 'original'
+        ? <img src={`${import.meta.env.BASE_URL}logo/logo1.png`} width={markSize} height={markSize} style={{ objectFit: 'contain' }} alt="MasterEduTech logo" />
+        : variant === 'negativo'
+        ? <img src={`${import.meta.env.BASE_URL}logo/logo-branca.png`} width={markSize} height={markSize} style={{ objectFit: 'contain' }} alt="MasterEduTech logo branca" />
+        : variant === 'blue'
+        ? <img src={`${import.meta.env.BASE_URL}logo/logo-azulcalara.png`} width={markSize} height={markSize} style={{ objectFit: 'contain' }} alt="MasterEduTech logo azul clara" />
+        : variant === 'navy'
+        ? <img src={`${import.meta.env.BASE_URL}logo/logo-azulescuro.png`} width={markSize} height={markSize} style={{ objectFit: 'contain', mixBlendMode: 'multiply' }} alt="MasterEduTech logo azul escuro" />
+        : <Mark size={markSize} />
+      }
       <div style={{ display: 'flex', alignItems: 'baseline', gap: '3px' }}>
         <span style={{
           fontFamily: 'var(--font-heading)',

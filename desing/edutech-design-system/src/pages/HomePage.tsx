@@ -1,11 +1,285 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Logo, LogoMarkOriginal, LogoAnimatedFloat, LogoAnimatedDraw, LogoAnimatedGlow, LogoAnimatedSpinReveal, LogoAnimatedMorph } from '../components/Logo'
+import { Logo } from '../components/Logo'
 import { Button } from '../components/Button'
 import { Input, Textarea, Select, Checkbox, Toggle } from '../components/Input'
 import { GlassCard } from '../components/GlassCard'
 import { Badge } from '../components/Badge'
 import { Avatar, AvatarGroup } from '../components/Avatar'
 import { Notification } from '../components/Notification'
+import {
+  ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid,
+  Tooltip, Legend, LineChart, Line, AreaChart, Area,
+  RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
+  PieChart, Pie, Cell, ScatterChart, Scatter,
+} from 'recharts'
+
+// ============================================================
+// Chart data
+// ============================================================
+
+const CHART_COLORS = ['#5291bb', '#83e6c3', '#73acd2', '#f59e0b', '#ef4444', '#8b5cf6']
+
+const MONTHLY_DATA = [
+  { mes: 'Jan', React: 145, TypeScript:  89, UXUI:  67 },
+  { mes: 'Fev', React: 162, TypeScript:  98, UXUI:  74 },
+  { mes: 'Mar', React: 178, TypeScript: 112, UXUI:  82 },
+  { mes: 'Abr', React: 195, TypeScript: 128, UXUI:  91 },
+  { mes: 'Mai', React: 210, TypeScript: 141, UXUI: 105 },
+  { mes: 'Jun', React: 234, TypeScript: 158, UXUI: 118 },
+  { mes: 'Jul', React: 218, TypeScript: 165, UXUI: 124 },
+  { mes: 'Ago', React: 252, TypeScript: 179, UXUI: 137 },
+  { mes: 'Set', React: 268, TypeScript: 192, UXUI: 148 },
+  { mes: 'Out', React: 285, TypeScript: 208, UXUI: 162 },
+  { mes: 'Nov', React: 298, TypeScript: 221, UXUI: 175 },
+  { mes: 'Dez', React: 312, TypeScript: 235, UXUI: 189 },
+]
+
+const GROWTH_DATA = [
+  { mes: 'Jan', Usuarios: 1200, Receita:  8400 },
+  { mes: 'Fev', Usuarios: 1450, Receita: 10150 },
+  { mes: 'Mar', Usuarios: 1680, Receita: 11760 },
+  { mes: 'Abr', Usuarios: 1920, Receita: 13440 },
+  { mes: 'Mai', Usuarios: 2100, Receita: 14700 },
+  { mes: 'Jun', Usuarios: 2380, Receita: 16660 },
+  { mes: 'Jul', Usuarios: 2650, Receita: 18550 },
+  { mes: 'Ago', Usuarios: 2920, Receita: 20440 },
+  { mes: 'Set', Usuarios: 3180, Receita: 22260 },
+  { mes: 'Out', Usuarios: 3450, Receita: 24150 },
+  { mes: 'Nov', Usuarios: 3720, Receita: 26040 },
+  { mes: 'Dez', Usuarios: 4100, Receita: 28700 },
+]
+
+const RATING_DATA = [
+  { curso: 'UX/UI Design',   avaliacao: 4.9 },
+  { curso: 'React Avançado', avaliacao: 4.8 },
+  { curso: 'TypeScript Pro', avaliacao: 4.7 },
+  { curso: 'Data Science',   avaliacao: 4.7 },
+  { curso: 'Node.js APIs',   avaliacao: 4.6 },
+  { curso: 'DevOps Cloud',   avaliacao: 4.5 },
+]
+
+const CATEGORY_DATA = [
+  { name: 'Frontend', value: 38 },
+  { name: 'Backend',  value: 25 },
+  { name: 'UX/UI',    value: 18 },
+  { name: 'DevOps',   value: 12 },
+  { name: 'Data',     value:  7 },
+]
+
+const COMPLETION_DATA = [
+  { name: 'Concluído',    value: 62 },
+  { name: 'Em Progresso', value: 24 },
+  { name: 'Não Iniciado', value: 14 },
+]
+
+const SCATTER_DATA = [
+  { horas: 1,   nota: 4.2 }, { horas: 1.5, nota: 4.8 },
+  { horas: 2,   nota: 5.1 }, { horas: 2.5, nota: 5.5 },
+  { horas: 3,   nota: 5.8 }, { horas: 3.5, nota: 6.2 },
+  { horas: 4,   nota: 6.5 }, { horas: 4.5, nota: 7.0 },
+  { horas: 5,   nota: 7.2 }, { horas: 5.5, nota: 7.5 },
+  { horas: 6,   nota: 7.8 }, { horas: 6.5, nota: 8.0 },
+  { horas: 7,   nota: 8.1 }, { horas: 7.5, nota: 8.4 },
+  { horas: 8,   nota: 8.6 }, { horas: 8.5, nota: 9.1 },
+  { horas: 9,   nota: 9.0 }, { horas: 9.5, nota: 9.4 },
+  { horas: 10,  nota: 9.3 }, { horas: 11,  nota: 9.7 },
+]
+
+const RADAR_LABELS = ['React','TypeScript','Node.js','UX/UI','Git','CSS','APIs','Testes','DevOps','Banco de Dados']
+const RADAR_A = [88, 72, 65, 80, 91, 78, 70, 58, 45, 67]
+const RADAR_B = [74, 68, 71, 63, 80, 72, 75, 66, 58, 70]
+
+// ============================================================
+// Chart helpers
+// ============================================================
+
+const ChartTooltip = ({ active, payload, label }: any) => {
+  if (!active || !payload?.length) return null
+  return (
+    <div style={{
+      background: 'rgba(8,5,26,0.94)', backdropFilter: 'blur(20px)',
+      border: '1px solid rgba(82,145,187,0.28)', borderRadius: '10px',
+      padding: '10px 14px', boxShadow: '0 8px 32px rgba(0,0,0,0.35)', minWidth: '120px',
+    }}>
+      {label !== undefined && label !== '' && (
+        <div style={{ fontSize: '11px', color: '#73acd2', marginBottom: '8px', fontWeight: 600 }}>{label}</div>
+      )}
+      {payload.map((p: any, i: number) => (
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: i < payload.length - 1 ? '4px' : 0 }}>
+          <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: p.color, flexShrink: 0 }} />
+          <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.50)' }}>{p.name}:</span>
+          <span style={{ fontSize: '12px', fontWeight: 600, color: '#fff' }}>
+            {typeof p.value === 'number' && p.value > 999 ? p.value.toLocaleString('pt-BR') : p.value}
+          </span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+const ChartLegend = ({ payload }: any) => (
+  <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginTop: '12px', justifyContent: 'center' }}>
+    {payload?.map((e: any, i: number) => (
+      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+        <div style={{ width: '8px', height: '8px', borderRadius: '2px', background: e.color }} />
+        <span style={{ fontSize: '11px', color: 'var(--c-text-2)' }}>{e.value}</span>
+      </div>
+    ))}
+  </div>
+)
+
+const ChartCard: React.FC<{
+  title: string; subtitle?: string; extra?: React.ReactNode
+  children: React.ReactNode; style?: React.CSSProperties
+}> = ({ title, subtitle, extra, children, style }) => (
+  <GlassCard style={{ padding: '24px', ...style }}>
+    <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '20px', gap: '12px' }}>
+      <div>
+        <div style={{ fontSize: 'var(--font-size-sm)', fontWeight: 700, color: 'var(--c-text-1)', marginBottom: '2px' }}>{title}</div>
+        {subtitle && <div style={{ fontSize: '11px', color: 'var(--c-text-3)' }}>{subtitle}</div>}
+      </div>
+      {extra}
+    </div>
+    {children}
+  </GlassCard>
+)
+
+// ============================================================
+// Form Showcase
+// ============================================================
+
+const PLANOS = [
+  { value: 'basico',     label: 'Básico',     desc: 'Cursos gratuitos',        price: 'Grátis'     },
+  { value: 'pro',        label: 'Pro',         desc: 'Todos os cursos + certs', price: 'R$ 49/mês'  },
+  { value: 'enterprise', label: 'Enterprise',  desc: 'Equipes + analytics',     price: 'R$ 149/mês' },
+]
+
+const SKILLS_OPTIONS = [
+  { key: 'react',      label: 'React'        },
+  { key: 'typescript', label: 'TypeScript'   },
+  { key: 'ux',         label: 'UX/UI Design' },
+  { key: 'node',       label: 'Node.js'      },
+  { key: 'python',     label: 'Python'       },
+]
+
+const maskCep   = (v: string) => { const d = v.replace(/\D/g,'').slice(0,8); return d.length>5 ? `${d.slice(0,5)}-${d.slice(5)}` : d }
+const maskPhone = (v: string) => { const d = v.replace(/\D/g,'').slice(0,11); if(d.length<=2) return d; if(d.length<=6) return `(${d.slice(0,2)}) ${d.slice(2)}`; if(d.length<=10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`; return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}` }
+
+const FormShowcase: React.FC = () => {
+  const [nome,        setNome]        = useState('')
+  const [username,    setUsername]    = useState('')
+  const [email,       setEmail]       = useState('')
+  const [senha,       setSenha]       = useState('')
+  const [idade,       setIdade]       = useState('')
+  const [cep,         setCep]         = useState('')
+  const [telefone,    setTelefone]    = useState('')
+  const [pais,        setPais]        = useState('')
+  const [estado,      setEstado]      = useState('')
+  const [plano,       setPlano]       = useState('pro')
+  const [nascimento,  setNascimento]  = useState('')
+  const [nivel,       setNivel]       = useState(60)
+  const [skills,      setSkills]      = useState<Record<string,boolean>>({ react: true, typescript: false, ux: true, node: false, python: false })
+  const [newsletter,    setNewsletter]    = useState(true)
+  const [perfilPublico, setPerfilPublico] = useState(false)
+  const [notificacoes,  setNotificacoes]  = useState(true)
+  const [termos,        setTermos]        = useState(false)
+
+  return (
+    <GlassCard style={{ padding: '28px' }}>
+      {/* Text / masked / date fields */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginBottom: '28px' }}>
+        <Input label="Nome Completo" placeholder="João Silva" value={nome} onChange={e => setNome(e.target.value)} />
+        <Input label="Username" placeholder="joao.silva" value={username} onChange={e => setUsername(e.target.value)}
+          icon={<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" stroke="currentColor" strokeWidth="1.3"/><path d="M1.5 12c0-2.2 2.46-4 5.5-4s5.5 1.8 5.5 4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>} />
+        <Input label="Email" type="email" placeholder="joao@exemplo.com" value={email} onChange={e => setEmail(e.target.value)}
+          icon={<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="2.5" width="12" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.3"/><path d="M1 4l6 4 6-4" stroke="currentColor" strokeWidth="1.3"/></svg>} />
+        <Input label="Senha" type="password" placeholder="Mínimo 8 caracteres" value={senha} onChange={e => setSenha(e.target.value)} />
+        <Input label="Idade" type="number" placeholder="18" value={idade} onChange={e => setIdade(e.target.value)} helper="Entre 13 e 100 anos" />
+        <Input label="CEP" placeholder="00000-000" value={cep} onChange={e => setCep(maskCep(e.target.value))} helper="Preencha para buscar endereço" />
+        <Input label="Telefone / WhatsApp" placeholder="(00) 00000-0000" value={telefone} onChange={e => setTelefone(maskPhone(e.target.value))} />
+        <Input label="Data de Nascimento" type="date" value={nascimento} onChange={e => setNascimento(e.target.value)} />
+        <Select label="País" value={pais} onChange={e => setPais(e.target.value)} placeholder="Selecione o país..." options={[
+          { value: 'br', label: 'Brasil' }, { value: 'pt', label: 'Portugal' },
+          { value: 'ao', label: 'Angola' }, { value: 'us', label: 'Estados Unidos' }, { value: 'ar', label: 'Argentina' },
+        ]} />
+        <Select label="Estado" value={estado} onChange={e => setEstado(e.target.value)} placeholder="Selecione o estado..." options={[
+          { value: 'sp', label: 'São Paulo' }, { value: 'rj', label: 'Rio de Janeiro' },
+          { value: 'mg', label: 'Minas Gerais' }, { value: 'rs', label: 'Rio Grande do Sul' },
+          { value: 'pr', label: 'Paraná' }, { value: 'ba', label: 'Bahia' },
+        ]} />
+      </div>
+
+      {/* Radio — Plano */}
+      <div style={{ marginBottom: '24px' }}>
+        <div style={{ fontSize: '11px', color: 'var(--c-text-3)', marginBottom: '12px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Plano</div>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          {PLANOS.map(p => (
+            <label key={p.value} onClick={() => setPlano(p.value)} style={{
+              display: 'flex', alignItems: 'flex-start', gap: '10px',
+              padding: '14px 16px', borderRadius: '10px', flex: '1 1 150px', cursor: 'pointer',
+              border: `1px solid ${plano === p.value ? '#5291bb' : 'var(--c-border)'}`,
+              background: plano === p.value ? 'rgba(82,145,187,0.10)' : 'var(--c-glass-bg)',
+              transition: 'all 180ms ease',
+            }}>
+              <div style={{ position: 'relative', width: '16px', height: '16px', flexShrink: 0, marginTop: '2px' }}>
+                <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: `2px solid ${plano === p.value ? '#5291bb' : 'rgba(255,255,255,0.20)'}`, transition: 'border-color 180ms' }} />
+                {plano === p.value && <div style={{ position: 'absolute', top: '3px', left: '3px', width: '10px', height: '10px', borderRadius: '50%', background: '#5291bb' }} />}
+              </div>
+              <div>
+                <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--c-text-1)' }}>{p.label}</div>
+                <div style={{ fontSize: '11px', color: 'var(--c-text-3)', marginTop: '2px' }}>{p.desc}</div>
+                <div style={{ fontSize: '12px', color: '#83e6c3', fontWeight: 600, marginTop: '4px' }}>{p.price}</div>
+              </div>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Range — Nível */}
+      <div style={{ marginBottom: '24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+          <span style={{ fontSize: '11px', color: 'var(--c-text-3)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Nível de Experiência</span>
+          <span style={{ fontSize: '12px', fontWeight: 700, color: '#83e6c3' }}>{nivel}%</span>
+        </div>
+        <div style={{ position: 'relative', height: '20px', display: 'flex', alignItems: 'center' }}>
+          <div style={{ position: 'absolute', left: 0, right: 0, height: '6px', borderRadius: '3px', background: 'var(--c-glass-bg)', border: '1px solid var(--c-border)' }}>
+            <div style={{ height: '100%', width: `${nivel}%`, borderRadius: '3px', background: 'linear-gradient(90deg,#5291bb,#83e6c3)', transition: 'width 60ms' }} />
+          </div>
+          <input type="range" min={0} max={100} value={nivel} onChange={e => setNivel(parseInt(e.target.value))} style={{ position: 'absolute', width: '100%', height: '20px', opacity: 0, cursor: 'pointer', margin: 0 }} />
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px' }}>
+          {['Iniciante','Básico','Intermediário','Avançado','Expert'].map(l => <span key={l} style={{ fontSize: '10px', color: 'var(--c-text-3)' }}>{l}</span>)}
+        </div>
+      </div>
+
+      {/* Checkboxes — Skills */}
+      <div style={{ marginBottom: '24px' }}>
+        <div style={{ fontSize: '11px', color: 'var(--c-text-3)', marginBottom: '12px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Áreas de Interesse</div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+          {SKILLS_OPTIONS.map(s => (
+            <Checkbox key={s.key} label={s.label} checked={skills[s.key]} onChange={v => setSkills(prev => ({ ...prev, [s.key]: v }))} />
+          ))}
+        </div>
+      </div>
+
+      {/* Toggles */}
+      <div style={{ marginBottom: '28px', display: 'flex', flexWrap: 'wrap', gap: '24px' }}>
+        <Toggle label="Newsletter semanal"  checked={newsletter}    onChange={v => setNewsletter(v)} />
+        <Toggle label="Perfil público"      checked={perfilPublico} onChange={v => setPerfilPublico(v)} />
+        <Toggle label="Notificações push"   checked={notificacoes}  onChange={v => setNotificacoes(v)} />
+      </div>
+
+      {/* Termos + submit */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', paddingTop: '20px', borderTop: '1px solid var(--c-border)' }}>
+        <Checkbox label="Aceito os termos de uso e política de privacidade" checked={termos} onChange={v => setTermos(v)} />
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <Button variant="ghost">Cancelar</Button>
+          <Button variant="primary" disabled={!termos}>Criar Conta</Button>
+        </div>
+      </div>
+    </GlassCard>
+  )
+}
 
 // ============================================================
 // Types
@@ -242,6 +516,74 @@ const ProgressBar: React.FC = () => {
 }
 
 // ============================================================
+// Motion: Möbius Loader
+// ============================================================
+
+const MobiusLoader: React.FC = () => {
+  const [key, setKey] = useState(0)
+  const DURATION = 8 // seconds per cycle
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+      <div
+        key={key}
+        style={{ position: 'relative', width: '100px', height: '100px', perspective: '300px' }}
+      >
+        {/* Infinity SVG — gira 2x depois dobra como fita de Möbius */}
+        <svg
+          width="100" height="100" viewBox="0 0 100 100" fill="none"
+          style={{
+            position: 'absolute', inset: 0,
+            animation: `mobius-infinity ${DURATION}s cubic-bezier(0.4,0,0.2,1) forwards`,
+            transformOrigin: 'center',
+          }}
+        >
+          <defs>
+            <linearGradient id="inf-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%"   stopColor="#5291bb" />
+              <stop offset="100%" stopColor="#83e6c3" />
+            </linearGradient>
+          </defs>
+          {/* Anel de fundo */}
+          <circle cx="50" cy="50" r="44" stroke="rgba(82,145,187,0.12)" strokeWidth="1" fill="none" />
+          {/* Símbolo ∞ usando dois arcos */}
+          <path
+            d="M50,50 C50,38 40,28 30,30 C20,32 18,42 18,50 C18,58 20,68 30,70 C40,72 50,62 50,50 C50,38 60,28 70,30 C80,32 82,42 82,50 C82,58 80,68 70,70 C60,72 50,62 50,50 Z"
+            stroke="url(#inf-grad)" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"
+          />
+          {/* Ponto brilhante que percorre o ∞ */}
+          <circle r="4" fill="#83e6c3" fillOpacity="0.9">
+            <animateMotion
+              dur={`${DURATION * 0.35}s`}
+              repeatCount="2"
+              path="M50,50 C50,38 40,28 30,30 C20,32 18,42 18,50 C18,58 20,68 30,70 C40,72 50,62 50,50 C50,38 60,28 70,30 C80,32 82,42 82,50 C82,58 80,68 70,70 C60,72 50,62 50,50 Z"
+            />
+          </circle>
+        </svg>
+
+        {/* logo1.png — wrapper cuida do posicionamento, img recebe a animação */}
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <img
+            src={`${import.meta.env.BASE_URL}logo/logo1.png`}
+            alt=""
+            style={{
+              width: '56px', height: '56px',
+              objectFit: 'contain',
+              animation: `mobius-logo ${DURATION}s cubic-bezier(0.4,0,0.2,1) forwards`,
+              transformOrigin: 'center',
+            }}
+          />
+        </div>
+      </div>
+
+      <Button variant="ghost" size="sm" onClick={() => setKey(k => k + 1)}>
+        Repetir Animação
+      </Button>
+    </div>
+  )
+}
+
+// ============================================================
 // Motion: Logo Animation
 // ============================================================
 
@@ -286,26 +628,20 @@ const LogoAnimation: React.FC = () => {
             />
           </svg>
 
-          {/* M glyph */}
-          <svg
-            width="90" height="90" viewBox="0 0 90 90"
-            fill="none"
-            style={{ position: 'absolute', inset: 0 }}
-          >
-            <polyline
-              points="25,62 25,30 45,52 65,30 65,62"
-              stroke="#5291bb"
-              strokeWidth="4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-              strokeDasharray="120"
+          {/* Logo central — wrapper cuida do posicionamento, img recebe a animação */}
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img
+              src={`${import.meta.env.BASE_URL}logo/logo1.png`}
+              alt=""
               style={{
-                animation: 'draw-check 0.8s cubic-bezier(0.4,0,0.2,1) forwards',
-                strokeDashoffset: 120,
+                width: '46px', height: '46px',
+                objectFit: 'contain',
+                animation: 'logo-reveal 0.5s ease forwards',
+                animationDelay: '0.3s',
+                opacity: 0,
               }}
             />
-          </svg>
+          </div>
         </div>
 
         {/* Wordmark */}
@@ -562,6 +898,7 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
   const [inputVal, setInputVal] = useState('')
   const [textVal, setTextVal] = useState('')
   const [selectVal, setSelectVal] = useState('')
+  const [radarVertices, setRadarVertices] = useState(5)
   const mainRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -586,11 +923,12 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
     { href: '#superficies', label: 'Superficies', id: 'superficies', emoji: 'S' },
     { href: '#componentes', label: 'Componentes', id: 'componentes', emoji: 'C' },
     { href: '#formularios', label: 'Formularios', id: 'formularios', emoji: 'F' },
-    { href: '#motion', label: 'Motion', id: 'motion', emoji: 'M' },
+    { href: '#motion',    label: 'Motion',   id: 'motion',    emoji: 'M' },
+    { href: '#graficos',  label: 'Graficos',  id: 'graficos',  emoji: 'G' },
   ]
 
   const purpleSwatches = [
-    { label: '50', hex: '#f5f0ff' }, { label: '100', hex: '#ede0ff' },
+    { label: '50', hex: '#f6f6f8' }, { label: '100', hex: '#ede0ff' },
     { label: '200', hex: '#d4b8ff' }, { label: '300', hex: '#73acd2' },
     { label: '400', hex: '#73acd2' }, { label: '500', hex: '#5291bb' },
     { label: '600', hex: '#22105d' }, { label: '700', hex: '#4b16a8' },
@@ -605,7 +943,7 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
   ]
 
   const semanticColors = [
-    { label: 'Success', hex: '#22c55e' },
+    { label: 'Success', hex: '#83e6c3' },
     { label: 'Warning', hex: '#f59e0b' },
     { label: 'Error', hex: '#ef4444' },
     { label: 'Info', hex: '#5291bb' },
@@ -812,7 +1150,7 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                   <Logo variant="original" size="lg" />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
-                  <LogoMarkOriginal size={72} />
+                  <img src={`${import.meta.env.BASE_URL}logo/logo1.png`} width={72} height={72} style={{ objectFit: 'contain' }} alt="MasterEduTech símbolo" />
                   <span style={{ fontSize: '11px', color: 'var(--c-text-3)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Símbolo</span>
                 </div>
               </div>
@@ -875,6 +1213,62 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                   <div key={s} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
                     <Logo variant="original" size={s} />
                     <span style={{ fontSize: '10px', color: 'var(--c-text-3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{s}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ marginTop: '32px', display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                {[
+                  { label: 'Original',    bg: '#0c143b', border: 'rgba(255,255,255,0.10)', masterColor: '#83e6c3',  edutechColor: 'rgba(131,230,195,0.75)', img: 'logo1.png',             blend: undefined        },
+                  { label: 'Negativo',    bg: '#060a18', border: 'rgba(255,255,255,0.08)', masterColor: '#ffffff',  edutechColor: 'rgba(255,255,255,0.75)', img: 'logo-branca.png',        blend: undefined        },
+                  { label: 'Azul Clara',  bg: '#f6f6f8', border: 'rgba(82,145,187,0.15)', masterColor: '#5291bb',  edutechColor: 'rgba(82,145,187,0.80)',  img: 'logo-azulcalara.png',    blend: undefined        },
+                  { label: 'Azul Escuro', bg: '#ffffff', border: 'rgba(12,20,59,0.10)',   masterColor: '#0c143b',  edutechColor: 'rgba(12,20,59,0.70)',    img: 'logo-azulescuro.png',    blend: 'multiply' as React.CSSProperties['mixBlendMode'] },
+                ].map(v => (
+                  <div key={v.label}>
+                    <div style={{ fontSize: '11px', color: 'var(--c-text-3)', marginBottom: '12px', fontFamily: 'var(--font-mono)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{v.label}</div>
+                    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+                      {[
+                        { size: 'xs', square: 72,  logo: 24, masterPx: 7,  edutechPx: 6  },
+                        { size: 'sm', square: 90,  logo: 28, masterPx: 10, edutechPx: 8  },
+                        { size: 'md', square: 112, logo: 40, masterPx: 11, edutechPx: 9  },
+                        { size: 'lg', square: 144, logo: 52, masterPx: 14, edutechPx: 11 },
+                        { size: 'xl', square: 180, logo: 66, masterPx: 17, edutechPx: 14 },
+                      ].map(s => (
+                        <div key={s.size} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                          <div style={{
+                            width: `${s.square}px`,
+                            height: `${s.square}px`,
+                            background: v.bg,
+                            border: `1px solid ${v.border}`,
+                            borderRadius: '12px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            justifyContent: 'center',
+                            padding: `${Math.round(s.square * 0.1)}px`,
+                            boxSizing: 'border-box',
+                            rowGap: `${Math.max(3, Math.round(s.square * 0.035))}px`,
+                            overflow: 'hidden',
+                          }}>
+                            <img
+                              src={`${import.meta.env.BASE_URL}logo/${v.img}`}
+                              alt=""
+                              style={{
+                                display: 'block',
+                                width: '100%',
+                                height: `${s.logo}px`,
+                                objectFit: 'contain',
+                                flexShrink: 0,
+                                ...(v.blend ? { mixBlendMode: v.blend } : {}),
+                              }}
+                            />
+                            <span style={{ display: 'block', width: '100%', textAlign: 'center', fontSize: s.masterPx, fontWeight: 700, color: v.masterColor, letterSpacing: '-0.02em', lineHeight: 1, textTransform: 'uppercase', fontFamily: 'var(--font-heading)' }}>MASTER</span>
+                            <span style={{ display: 'block', width: '100%', textAlign: 'center', fontSize: s.edutechPx, fontWeight: 400, color: v.edutechColor, letterSpacing: '-0.01em', lineHeight: 1, fontFamily: 'var(--font-sans)' }}>EduTech</span>
+                          </div>
+                          <span style={{ fontSize: '10px', color: 'var(--c-text-3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{s.size}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -1250,6 +1644,10 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                 />
               </div>
             </SubSection>
+
+            <SubSection title="Modelo Completo">
+              <FormShowcase />
+            </SubSection>
           </Section>
 
           {/* ===== MOTION ===== */}
@@ -1320,9 +1718,16 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
             </SubSection>
 
             <SubSection title="Logo Animation">
-              <GlassCard variant="blue" style={{ display: 'flex', justifyContent: 'center', padding: '48px' }}>
-                <LogoAnimation />
-              </GlassCard>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+                <GlassCard variant="blue" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', gap: '12px' }}>
+                  <div style={{ fontSize: '11px', color: 'var(--c-text-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>Logo + Wordmark</div>
+                  <LogoAnimation />
+                </GlassCard>
+                <GlassCard style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', gap: '12px' }}>
+                  <div style={{ fontSize: '11px', color: 'var(--c-text-3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>∞ → Möbius → M</div>
+                  <MobiusLoader />
+                </GlassCard>
+              </div>
             </SubSection>
 
             <SubSection title="Icon Animations (hover para ativar)">
@@ -1395,12 +1800,20 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
             <SubSection title="Animações de Logo">
               <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
                 {[
-                  { label: 'Float',       node: <LogoAnimatedFloat size={72} /> },
-                  { label: 'Draw',        node: <LogoAnimatedDraw size={72} /> },
-                  { label: 'Glow Pulse',  node: <LogoAnimatedGlow size={72} /> },
-                  { label: 'Spin Reveal', node: <LogoAnimatedSpinReveal size={72} /> },
-                  { label: 'Morph',       node: <LogoAnimatedMorph size={72} /> },
-                ].map(({ label, node }) => (
+                  { label: 'Float',       anim: 'logo-float 3s ease-in-out infinite' },
+                  { label: 'Draw',        anim: 'logo-img-reveal 1.4s ease forwards' },
+                  { label: 'Glow Pulse',  anim: 'logo-glow-pulse 2.5s ease-in-out infinite' },
+                  { label: 'Spin Reveal', anim: 'logo-spin-reveal 1s cubic-bezier(0.34,1.56,0.64,1) forwards' },
+                  { label: 'Morph',       anim: 'logo-morph 4s ease-in-out infinite' },
+                ].map(({ label, anim }) => {
+                  const node = (
+                    <img
+                      src={`${import.meta.env.BASE_URL}logo/logo1.png`}
+                      alt=""
+                      style={{ width: '72px', height: '72px', objectFit: 'contain', animation: anim, display: 'block' }}
+                    />
+                  )
+                  return (
                   <div
                     key={label}
                     style={{
@@ -1418,7 +1831,173 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                     {node}
                     <span style={{ fontSize: '11px', color: 'var(--c-text-2)', fontFamily: 'var(--font-mono)' }}>{label}</span>
                   </div>
-                ))}
+                )
+                })}
+              </div>
+            </SubSection>
+
+          </Section>
+
+          {/* ===== GRÁFICOS ===== */}
+          <Section id="graficos" title="Gráficos" subtitle="Visualizações de dados com a identidade visual MasterEduTech.">
+
+            {/* Colunas */}
+            <SubSection title="Colunas — Matrículas por Mês">
+              <ChartCard title="Novas Matrículas" subtitle="Evolução mensal por categoria de curso">
+                <ResponsiveContainer width="100%" height={280}>
+                  <BarChart data={MONTHLY_DATA} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+                    <defs>
+                      <linearGradient id="gb1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#5291bb"/><stop offset="100%" stopColor="#5291bb" stopOpacity={0.6}/></linearGradient>
+                      <linearGradient id="gb2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#83e6c3"/><stop offset="100%" stopColor="#83e6c3" stopOpacity={0.6}/></linearGradient>
+                      <linearGradient id="gb3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#73acd2"/><stop offset="100%" stopColor="#73acd2" stopOpacity={0.6}/></linearGradient>
+                    </defs>
+                    <CartesianGrid vertical={false} stroke="rgba(255,255,255,0.05)" />
+                    <XAxis dataKey="mes" tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={{ stroke: 'rgba(255,255,255,0.08)' }} tickLine={false} />
+                    <YAxis tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={false} tickLine={false} width={36} />
+                    <Tooltip content={<ChartTooltip />} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
+                    <Legend content={ChartLegend} />
+                    <Bar dataKey="React" fill="url(#gb1)" radius={[4,4,0,0]} />
+                    <Bar dataKey="TypeScript" fill="url(#gb2)" radius={[4,4,0,0]} />
+                    <Bar dataKey="UXUI" name="UX/UI" fill="url(#gb3)" radius={[4,4,0,0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </ChartCard>
+            </SubSection>
+
+            {/* Barras + Linha */}
+            <SubSection title="Barras Horizontais & Linha">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '20px' }}>
+                <ChartCard title="Avaliação por Curso" subtitle="Nota média dos alunos (0–5)">
+                  <ResponsiveContainer width="100%" height={240}>
+                    <BarChart data={RATING_DATA} layout="vertical" margin={{ top: 0, right: 12, bottom: 0, left: 0 }}>
+                      <defs>
+                        <linearGradient id="gb4" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#5291bb"/><stop offset="100%" stopColor="#83e6c3"/></linearGradient>
+                      </defs>
+                      <CartesianGrid horizontal={false} stroke="rgba(255,255,255,0.05)" />
+                      <XAxis type="number" domain={[4, 5]} tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={{ stroke: 'rgba(255,255,255,0.08)' }} tickLine={false} tickCount={3} />
+                      <YAxis dataKey="curso" type="category" tick={{ fill: 'rgba(255,255,255,0.55)', fontSize: 11 }} axisLine={false} tickLine={false} width={112} />
+                      <Tooltip content={<ChartTooltip />} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
+                      <Bar dataKey="avaliacao" name="Avaliação" fill="url(#gb4)" radius={[0,4,4,0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </ChartCard>
+
+                <ChartCard title="Crescimento de Usuários" subtitle="Novos registros por mês">
+                  <ResponsiveContainer width="100%" height={240}>
+                    <LineChart data={GROWTH_DATA} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                      <XAxis dataKey="mes" tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={{ stroke: 'rgba(255,255,255,0.08)' }} tickLine={false} />
+                      <YAxis tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={false} tickLine={false} width={44} />
+                      <Tooltip content={<ChartTooltip />} />
+                      <Legend content={ChartLegend} />
+                      <Line type="monotone" dataKey="Usuarios" stroke="#5291bb" strokeWidth={2.5} dot={{ fill: '#5291bb', r: 3, strokeWidth: 0 }} activeDot={{ r: 5, fill: '#83e6c3', strokeWidth: 0 }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </ChartCard>
+              </div>
+            </SubSection>
+
+            {/* Área */}
+            <SubSection title="Área — Receita & Usuários">
+              <ChartCard title="Crescimento Acumulado" subtitle="Correlação entre base de usuários e receita mensal (R$)">
+                <ResponsiveContainer width="100%" height={260}>
+                  <AreaChart data={GROWTH_DATA} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
+                    <defs>
+                      <linearGradient id="aBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#5291bb" stopOpacity={0.35}/><stop offset="95%" stopColor="#5291bb" stopOpacity={0}/></linearGradient>
+                      <linearGradient id="aMint" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#83e6c3" stopOpacity={0.30}/><stop offset="95%" stopColor="#83e6c3" stopOpacity={0}/></linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                    <XAxis dataKey="mes" tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={{ stroke: 'rgba(255,255,255,0.08)' }} tickLine={false} />
+                    <YAxis tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={false} tickLine={false} width={50} />
+                    <Tooltip content={<ChartTooltip />} />
+                    <Legend content={ChartLegend} />
+                    <Area type="monotone" dataKey="Receita" stroke="#83e6c3" strokeWidth={2} fill="url(#aMint)" dot={false} activeDot={{ r: 4, fill: '#83e6c3', strokeWidth: 0 }} />
+                    <Area type="monotone" dataKey="Usuarios" stroke="#5291bb" strokeWidth={2} fill="url(#aBlue)" dot={false} activeDot={{ r: 4, fill: '#5291bb', strokeWidth: 0 }} />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </ChartCard>
+            </SubSection>
+
+            {/* Radar + Pizza */}
+            <SubSection title="Radar & Pizza">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+
+                <ChartCard
+                  title="Habilidades"
+                  subtitle={`Comparativo em ${radarVertices} eixos`}
+                  extra={
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '11px', color: 'var(--c-text-3)' }}>Eixos</span>
+                      <button onClick={() => setRadarVertices(v => Math.max(3, v - 1))} style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'var(--c-glass-bg)', border: '1px solid var(--c-border)', color: 'var(--c-text-2)', cursor: 'pointer', fontSize: '15px', lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>−</button>
+                      <span style={{ fontSize: '13px', fontWeight: 700, color: '#5291bb', minWidth: '18px', textAlign: 'center' }}>{radarVertices}</span>
+                      <button onClick={() => setRadarVertices(v => Math.min(10, v + 1))} style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'var(--c-glass-bg)', border: '1px solid var(--c-border)', color: 'var(--c-text-2)', cursor: 'pointer', fontSize: '15px', lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
+                    </div>
+                  }
+                >
+                  <ResponsiveContainer width="100%" height={280}>
+                    <RadarChart
+                      data={RADAR_LABELS.slice(0, radarVertices).map((label, i) => ({ eixo: label, Você: RADAR_A[i], Média: RADAR_B[i] }))}
+                      margin={{ top: 10, right: 30, bottom: 10, left: 30 }}
+                    >
+                      <PolarGrid stroke="rgba(255,255,255,0.10)" />
+                      <PolarAngleAxis dataKey="eixo" tick={{ fill: 'rgba(255,255,255,0.55)', fontSize: 10 }} />
+                      <PolarRadiusAxis angle={90} domain={[0, 100]} tick={false} axisLine={false} />
+                      <Radar name="Você"  dataKey="Você"  stroke="#83e6c3" fill="#83e6c3" fillOpacity={0.20} strokeWidth={2} />
+                      <Radar name="Média" dataKey="Média" stroke="#5291bb" fill="#5291bb" fillOpacity={0.12} strokeWidth={1.5} strokeDasharray="4 3" />
+                      <Legend content={ChartLegend} />
+                      <Tooltip content={<ChartTooltip />} />
+                    </RadarChart>
+                  </ResponsiveContainer>
+                </ChartCard>
+
+                <ChartCard title="Categorias de Cursos" subtitle="Distribuição por área de conhecimento">
+                  <ResponsiveContainer width="100%" height={280}>
+                    <PieChart>
+                      <Pie data={CATEGORY_DATA} cx="50%" cy="45%" outerRadius={100} dataKey="value" nameKey="name" paddingAngle={3}>
+                        {CATEGORY_DATA.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
+                      </Pie>
+                      <Tooltip content={<ChartTooltip />} />
+                      <Legend content={ChartLegend} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </ChartCard>
+
+              </div>
+            </SubSection>
+
+            {/* Rosca + Scatter */}
+            <SubSection title="Rosca & Distribuição de Pontos">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
+
+                <ChartCard title="Taxa de Conclusão" subtitle="Status dos cursos matriculados">
+                  <ResponsiveContainer width="100%" height={260}>
+                    <PieChart>
+                      <Pie data={COMPLETION_DATA} cx="50%" cy="45%" innerRadius={65} outerRadius={95} dataKey="value" nameKey="name" paddingAngle={4}>
+                        {COMPLETION_DATA.map((_, i) => <Cell key={i} fill={['#83e6c3','#5291bb','#73acd2'][i]} fillOpacity={0.85} />)}
+                      </Pie>
+                      <Tooltip content={<ChartTooltip />} />
+                      <Legend content={ChartLegend} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </ChartCard>
+
+                <ChartCard title="Horas de Estudo × Desempenho" subtitle="Correlação entre dedicação e nota final" style={{ gridColumn: 'span 1' }}>
+                  <ResponsiveContainer width="100%" height={260}>
+                    <ScatterChart margin={{ top: 4, right: 16, bottom: 24, left: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
+                      <XAxis dataKey="horas" name="Horas/dia" type="number" domain={[0, 12]} tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={{ stroke: 'rgba(255,255,255,0.08)' }} tickLine={false}
+                        label={{ value: 'Horas de estudo / dia', position: 'insideBottom', offset: -14, fill: 'rgba(255,255,255,0.28)', fontSize: 10 }} />
+                      <YAxis dataKey="nota" name="Nota" domain={[3, 10]} tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={false} tickLine={false} width={32} />
+                      <Tooltip content={<ChartTooltip />} cursor={{ strokeDasharray: '3 3', stroke: 'rgba(255,255,255,0.12)' }} />
+                      <Scatter name="Alunos" data={SCATTER_DATA}>
+                        {SCATTER_DATA.map((_, i) => (
+                          <Cell key={i} fill={['#83e6c3','#5291bb','#73acd2'][i % 3]} fillOpacity={0.80} />
+                        ))}
+                      </Scatter>
+                    </ScatterChart>
+                  </ResponsiveContainer>
+                </ChartCard>
+
               </div>
             </SubSection>
 
