@@ -115,23 +115,53 @@ export const Logo: React.FC<LogoProps> = ({ variant = 'original', size = 'md', s
         : <Mark size={markSize} />
       }
       <div style={{ display: 'flex', alignItems: 'baseline', gap: '3px' }}>
-        <span style={{
-          fontFamily: 'var(--font-heading)',
-          fontWeight: 700,
-          fontSize: master,
-          color: masterColor,
-          letterSpacing: '-0.02em',
-          lineHeight: 1,
-          textTransform: 'uppercase',
-        }}>MASTER</span>
-        <span style={{
-          fontFamily: 'var(--font-sans)',
-          fontWeight: 400,
-          fontSize: edutech,
-          color: edutechColor,
-          letterSpacing: '-0.01em',
-          lineHeight: 1,
-        }}>Edutech</span>
+        {variant === 'original' ? (
+          <span style={{
+            display: 'inline-flex',
+            alignItems: 'baseline',
+            gap: '3px',
+            background: 'linear-gradient(to right, #5291bb 0%, #83e6c3 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}>
+            <span style={{
+              fontFamily: 'var(--font-heading)',
+              fontWeight: 700,
+              fontSize: master,
+              letterSpacing: '-0.02em',
+              lineHeight: 1,
+              textTransform: 'uppercase',
+            }}>MASTER</span>
+            <span style={{
+              fontFamily: 'var(--font-sans)',
+              fontWeight: 400,
+              fontSize: edutech,
+              letterSpacing: '-0.01em',
+              lineHeight: 1,
+            }}>Edutech</span>
+          </span>
+        ) : (
+          <>
+            <span style={{
+              fontFamily: 'var(--font-heading)',
+              fontWeight: 700,
+              fontSize: master,
+              color: masterColor,
+              letterSpacing: '-0.02em',
+              lineHeight: 1,
+              textTransform: 'uppercase',
+            }}>MASTER</span>
+            <span style={{
+              fontFamily: 'var(--font-sans)',
+              fontWeight: 400,
+              fontSize: edutech,
+              color: edutechColor,
+              letterSpacing: '-0.01em',
+              lineHeight: 1,
+            }}>Edutech</span>
+          </>
+        )}
       </div>
     </div>
   )

@@ -93,22 +93,28 @@ const RADAR_B = [74, 68, 71, 63, 80, 72, 75, 66, 58, 70]
 // Chart helpers
 // ============================================================
 
-const ChartTooltip = ({ active, payload, label }: any) => {
+const ChartTooltip = ({ active, payload, label, theme: t }: any) => {
   if (!active || !payload?.length) return null
+  const isDark = t !== 'light'
+  const bg          = isDark ? 'rgba(8,5,26,0.94)'          : 'rgba(246,246,248,0.97)'
+  const borderColor = isDark ? 'rgba(82,145,187,0.28)'      : 'rgba(82,145,187,0.35)'
+  const labelColor  = isDark ? '#73acd2'                    : '#2b6799'
+  const nameColor   = isDark ? 'rgba(255,255,255,0.50)'     : 'rgba(12,20,59,0.55)'
+  const valueColor  = isDark ? '#fff'                       : '#0c143b'
   return (
     <div style={{
-      background: 'rgba(8,5,26,0.94)', backdropFilter: 'blur(20px)',
-      border: '1px solid rgba(82,145,187,0.28)', borderRadius: '10px',
-      padding: '10px 14px', boxShadow: '0 8px 32px rgba(0,0,0,0.35)', minWidth: '120px',
+      background: bg, backdropFilter: 'blur(20px)',
+      border: `1px solid ${borderColor}`, borderRadius: '10px',
+      padding: '10px 14px', boxShadow: '0 8px 32px rgba(0,0,0,0.18)', minWidth: '120px',
     }}>
       {label !== undefined && label !== '' && (
-        <div style={{ fontSize: '11px', color: '#73acd2', marginBottom: '8px', fontWeight: 600 }}>{label}</div>
+        <div style={{ fontSize: '11px', color: labelColor, marginBottom: '8px', fontWeight: 600 }}>{label}</div>
       )}
       {payload.map((p: any, i: number) => (
         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: i < payload.length - 1 ? '4px' : 0 }}>
           <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: p.color, flexShrink: 0 }} />
-          <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.50)' }}>{p.name}:</span>
-          <span style={{ fontSize: '12px', fontWeight: 600, color: '#fff' }}>
+          <span style={{ fontSize: '12px', color: nameColor }}>{p.name}:</span>
+          <span style={{ fontSize: '12px', fontWeight: 600, color: valueColor }}>
             {typeof p.value === 'number' && p.value > 999 ? p.value.toLocaleString('pt-BR') : p.value}
           </span>
         </div>
@@ -901,6 +907,26 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
   const [radarVertices, setRadarVertices] = useState(5)
   const mainRef = useRef<HTMLDivElement>(null)
 
+  const cc = theme === 'light' ? {
+    grid:        'rgba(12,20,59,0.08)',
+    axisLine:    'rgba(12,20,59,0.12)',
+    tick:        'rgba(12,20,59,0.55)',
+    tickDense:   'rgba(12,20,59,0.70)',
+    tickFaint:   'rgba(12,20,59,0.40)',
+    cursor:      'rgba(12,20,59,0.04)',
+    cursorDash:  'rgba(12,20,59,0.15)',
+    radarGrid:   'rgba(12,20,59,0.12)',
+  } : {
+    grid:        'rgba(255,255,255,0.05)',
+    axisLine:    'rgba(255,255,255,0.08)',
+    tick:        'rgba(255,255,255,0.38)',
+    tickDense:   'rgba(255,255,255,0.55)',
+    tickFaint:   'rgba(255,255,255,0.28)',
+    cursor:      'rgba(255,255,255,0.04)',
+    cursorDash:  'rgba(255,255,255,0.12)',
+    radarGrid:   'rgba(255,255,255,0.10)',
+  }
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
@@ -1262,8 +1288,17 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                                 ...(v.blend ? { mixBlendMode: v.blend } : {}),
                               }}
                             />
-                            <span style={{ display: 'block', width: '100%', textAlign: 'center', fontSize: s.masterPx, fontWeight: 700, color: v.masterColor, letterSpacing: '-0.02em', lineHeight: 1, textTransform: 'uppercase', fontFamily: 'var(--font-heading)' }}>MASTER</span>
-                            <span style={{ display: 'block', width: '100%', textAlign: 'center', fontSize: s.edutechPx, fontWeight: 400, color: v.edutechColor, letterSpacing: '-0.01em', lineHeight: 1, fontFamily: 'var(--font-sans)' }}>EduTech</span>
+                            {v.label === 'Original' ? (
+                              <>
+                                <span style={{ display: 'block', width: '100%', textAlign: 'center', fontSize: s.masterPx, fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1, textTransform: 'uppercase', fontFamily: 'var(--font-heading)', background: 'linear-gradient(to right, #5291bb, #83e6c3)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>MASTER</span>
+                                <span style={{ display: 'block', width: '100%', textAlign: 'center', fontSize: s.edutechPx, fontWeight: 400, letterSpacing: '-0.01em', lineHeight: 1, fontFamily: 'var(--font-sans)', background: 'linear-gradient(to right, #5291bb, #83e6c3)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>EduTech</span>
+                              </>
+                            ) : (
+                              <>
+                                <span style={{ display: 'block', width: '100%', textAlign: 'center', fontSize: s.masterPx, fontWeight: 700, color: v.masterColor, letterSpacing: '-0.02em', lineHeight: 1, textTransform: 'uppercase', fontFamily: 'var(--font-heading)' }}>MASTER</span>
+                                <span style={{ display: 'block', width: '100%', textAlign: 'center', fontSize: s.edutechPx, fontWeight: 400, color: v.edutechColor, letterSpacing: '-0.01em', lineHeight: 1, fontFamily: 'var(--font-sans)' }}>EduTech</span>
+                              </>
+                            )}
                           </div>
                           <span style={{ fontSize: '10px', color: 'var(--c-text-3)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{s.size}</span>
                         </div>
@@ -1851,10 +1886,10 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                       <linearGradient id="gb2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#83e6c3"/><stop offset="100%" stopColor="#83e6c3" stopOpacity={0.6}/></linearGradient>
                       <linearGradient id="gb3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#73acd2"/><stop offset="100%" stopColor="#73acd2" stopOpacity={0.6}/></linearGradient>
                     </defs>
-                    <CartesianGrid vertical={false} stroke="rgba(255,255,255,0.05)" />
-                    <XAxis dataKey="mes" tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={{ stroke: 'rgba(255,255,255,0.08)' }} tickLine={false} />
-                    <YAxis tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={false} tickLine={false} width={36} />
-                    <Tooltip content={<ChartTooltip />} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
+                    <CartesianGrid vertical={false} stroke={cc.grid} />
+                    <XAxis dataKey="mes" tick={{ fill: cc.tick, fontSize: 11 }} axisLine={{ stroke: cc.axisLine }} tickLine={false} />
+                    <YAxis tick={{ fill: cc.tick, fontSize: 11 }} axisLine={false} tickLine={false} width={36} />
+                    <Tooltip content={<ChartTooltip theme={theme} />} cursor={{ fill: cc.cursor }} />
                     <Legend content={ChartLegend} />
                     <Bar dataKey="React" fill="url(#gb1)" radius={[4,4,0,0]} />
                     <Bar dataKey="TypeScript" fill="url(#gb2)" radius={[4,4,0,0]} />
@@ -1873,10 +1908,10 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                       <defs>
                         <linearGradient id="gb4" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#5291bb"/><stop offset="100%" stopColor="#83e6c3"/></linearGradient>
                       </defs>
-                      <CartesianGrid horizontal={false} stroke="rgba(255,255,255,0.05)" />
-                      <XAxis type="number" domain={[4, 5]} tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={{ stroke: 'rgba(255,255,255,0.08)' }} tickLine={false} tickCount={3} />
-                      <YAxis dataKey="curso" type="category" tick={{ fill: 'rgba(255,255,255,0.55)', fontSize: 11 }} axisLine={false} tickLine={false} width={112} />
-                      <Tooltip content={<ChartTooltip />} cursor={{ fill: 'rgba(255,255,255,0.04)' }} />
+                      <CartesianGrid horizontal={false} stroke={cc.grid} />
+                      <XAxis type="number" domain={[4, 5]} tick={{ fill: cc.tick, fontSize: 11 }} axisLine={{ stroke: cc.axisLine }} tickLine={false} tickCount={3} />
+                      <YAxis dataKey="curso" type="category" tick={{ fill: cc.tickDense, fontSize: 11 }} axisLine={false} tickLine={false} width={112} />
+                      <Tooltip content={<ChartTooltip theme={theme} />} cursor={{ fill: cc.cursor }} />
                       <Bar dataKey="avaliacao" name="Avaliação" fill="url(#gb4)" radius={[0,4,4,0]} />
                     </BarChart>
                   </ResponsiveContainer>
@@ -1885,10 +1920,10 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                 <ChartCard title="Crescimento de Usuários" subtitle="Novos registros por mês">
                   <ResponsiveContainer width="100%" height={240}>
                     <LineChart data={GROWTH_DATA} margin={{ top: 4, right: 4, bottom: 0, left: 0 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                      <XAxis dataKey="mes" tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={{ stroke: 'rgba(255,255,255,0.08)' }} tickLine={false} />
-                      <YAxis tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={false} tickLine={false} width={44} />
-                      <Tooltip content={<ChartTooltip />} />
+                      <CartesianGrid strokeDasharray="3 3" stroke={cc.grid} />
+                      <XAxis dataKey="mes" tick={{ fill: cc.tick, fontSize: 11 }} axisLine={{ stroke: cc.axisLine }} tickLine={false} />
+                      <YAxis tick={{ fill: cc.tick, fontSize: 11 }} axisLine={false} tickLine={false} width={44} />
+                      <Tooltip content={<ChartTooltip theme={theme} />} />
                       <Legend content={ChartLegend} />
                       <Line type="monotone" dataKey="Usuarios" stroke="#5291bb" strokeWidth={2.5} dot={{ fill: '#5291bb', r: 3, strokeWidth: 0 }} activeDot={{ r: 5, fill: '#83e6c3', strokeWidth: 0 }} />
                     </LineChart>
@@ -1906,10 +1941,10 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                       <linearGradient id="aBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#5291bb" stopOpacity={0.35}/><stop offset="95%" stopColor="#5291bb" stopOpacity={0}/></linearGradient>
                       <linearGradient id="aMint" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#83e6c3" stopOpacity={0.30}/><stop offset="95%" stopColor="#83e6c3" stopOpacity={0}/></linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                    <XAxis dataKey="mes" tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={{ stroke: 'rgba(255,255,255,0.08)' }} tickLine={false} />
-                    <YAxis tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={false} tickLine={false} width={50} />
-                    <Tooltip content={<ChartTooltip />} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={cc.grid} />
+                    <XAxis dataKey="mes" tick={{ fill: cc.tick, fontSize: 11 }} axisLine={{ stroke: cc.axisLine }} tickLine={false} />
+                    <YAxis tick={{ fill: cc.tick, fontSize: 11 }} axisLine={false} tickLine={false} width={50} />
+                    <Tooltip content={<ChartTooltip theme={theme} />} />
                     <Legend content={ChartLegend} />
                     <Area type="monotone" dataKey="Receita" stroke="#83e6c3" strokeWidth={2} fill="url(#aMint)" dot={false} activeDot={{ r: 4, fill: '#83e6c3', strokeWidth: 0 }} />
                     <Area type="monotone" dataKey="Usuarios" stroke="#5291bb" strokeWidth={2} fill="url(#aBlue)" dot={false} activeDot={{ r: 4, fill: '#5291bb', strokeWidth: 0 }} />
@@ -1939,13 +1974,13 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                       data={RADAR_LABELS.slice(0, radarVertices).map((label, i) => ({ eixo: label, Você: RADAR_A[i], Média: RADAR_B[i] }))}
                       margin={{ top: 10, right: 30, bottom: 10, left: 30 }}
                     >
-                      <PolarGrid stroke="rgba(255,255,255,0.10)" />
-                      <PolarAngleAxis dataKey="eixo" tick={{ fill: 'rgba(255,255,255,0.55)', fontSize: 10 }} />
+                      <PolarGrid stroke={cc.radarGrid} />
+                      <PolarAngleAxis dataKey="eixo" tick={{ fill: cc.tickDense, fontSize: 10 }} />
                       <PolarRadiusAxis angle={90} domain={[0, 100]} tick={false} axisLine={false} />
                       <Radar name="Você"  dataKey="Você"  stroke="#83e6c3" fill="#83e6c3" fillOpacity={0.20} strokeWidth={2} />
                       <Radar name="Média" dataKey="Média" stroke="#5291bb" fill="#5291bb" fillOpacity={0.12} strokeWidth={1.5} strokeDasharray="4 3" />
                       <Legend content={ChartLegend} />
-                      <Tooltip content={<ChartTooltip />} />
+                      <Tooltip content={<ChartTooltip theme={theme} />} />
                     </RadarChart>
                   </ResponsiveContainer>
                 </ChartCard>
@@ -1956,7 +1991,7 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                       <Pie data={CATEGORY_DATA} cx="50%" cy="45%" outerRadius={100} dataKey="value" nameKey="name" paddingAngle={3}>
                         {CATEGORY_DATA.map((_, i) => <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />)}
                       </Pie>
-                      <Tooltip content={<ChartTooltip />} />
+                      <Tooltip content={<ChartTooltip theme={theme} />} />
                       <Legend content={ChartLegend} />
                     </PieChart>
                   </ResponsiveContainer>
@@ -1975,7 +2010,7 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                       <Pie data={COMPLETION_DATA} cx="50%" cy="45%" innerRadius={65} outerRadius={95} dataKey="value" nameKey="name" paddingAngle={4}>
                         {COMPLETION_DATA.map((_, i) => <Cell key={i} fill={['#83e6c3','#5291bb','#73acd2'][i]} fillOpacity={0.85} />)}
                       </Pie>
-                      <Tooltip content={<ChartTooltip />} />
+                      <Tooltip content={<ChartTooltip theme={theme} />} />
                       <Legend content={ChartLegend} />
                     </PieChart>
                   </ResponsiveContainer>
@@ -1984,11 +2019,11 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
                 <ChartCard title="Horas de Estudo × Desempenho" subtitle="Correlação entre dedicação e nota final" style={{ gridColumn: 'span 1' }}>
                   <ResponsiveContainer width="100%" height={260}>
                     <ScatterChart margin={{ top: 4, right: 16, bottom: 24, left: 0 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                      <XAxis dataKey="horas" name="Horas/dia" type="number" domain={[0, 12]} tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={{ stroke: 'rgba(255,255,255,0.08)' }} tickLine={false}
-                        label={{ value: 'Horas de estudo / dia', position: 'insideBottom', offset: -14, fill: 'rgba(255,255,255,0.28)', fontSize: 10 }} />
-                      <YAxis dataKey="nota" name="Nota" domain={[3, 10]} tick={{ fill: 'rgba(255,255,255,0.38)', fontSize: 11 }} axisLine={false} tickLine={false} width={32} />
-                      <Tooltip content={<ChartTooltip />} cursor={{ strokeDasharray: '3 3', stroke: 'rgba(255,255,255,0.12)' }} />
+                      <CartesianGrid strokeDasharray="3 3" stroke={cc.grid} />
+                      <XAxis dataKey="horas" name="Horas/dia" type="number" domain={[0, 12]} tick={{ fill: cc.tick, fontSize: 11 }} axisLine={{ stroke: cc.axisLine }} tickLine={false}
+                        label={{ value: 'Horas de estudo / dia', position: 'insideBottom', offset: -14, fill: cc.tickFaint, fontSize: 10 }} />
+                      <YAxis dataKey="nota" name="Nota" domain={[3, 10]} tick={{ fill: cc.tick, fontSize: 11 }} axisLine={false} tickLine={false} width={32} />
+                      <Tooltip content={<ChartTooltip theme={theme} />} cursor={{ strokeDasharray: '3 3', stroke: cc.cursorDash }} />
                       <Scatter name="Alunos" data={SCATTER_DATA}>
                         {SCATTER_DATA.map((_, i) => (
                           <Cell key={i} fill={['#83e6c3','#5291bb','#73acd2'][i % 3]} fillOpacity={0.80} />
