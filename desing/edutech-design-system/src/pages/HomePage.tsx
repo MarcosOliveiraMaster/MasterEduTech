@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Logo } from '../components/Logo'
+import { ImageGenerator } from '../components/ImageGenerator'
 import { Button } from '../components/Button'
 import { Input, Textarea, Select, Checkbox, Toggle } from '../components/Input'
 import { GlassCard } from '../components/GlassCard'
@@ -951,6 +952,7 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
     { href: '#formularios', label: 'Formularios', id: 'formularios', emoji: 'F' },
     { href: '#motion',    label: 'Motion',   id: 'motion',    emoji: 'M' },
     { href: '#graficos',  label: 'Graficos',  id: 'graficos',  emoji: 'G' },
+    { href: '#gerador',   label: 'Gerador',   id: 'gerador',   emoji: 'I' },
   ]
 
   const purpleSwatches = [
@@ -2037,6 +2039,14 @@ export const HomePage: React.FC<HomePageProps> = ({ theme, onToggleTheme }) => {
             </SubSection>
 
           </Section>
+
+          {/* ===== GERADOR DE IMAGEM ===== */}
+          <Section id="gerador" title="Gerador de Imagem" subtitle="Exporte a logo em PNG ou SVG com variante, proporção e fundo personalizados.">
+            <SubSection title="Configurações de Exportação">
+              <ImageGenerator />
+            </SubSection>
+          </Section>
+
         </main>
       </div>
     </div>
