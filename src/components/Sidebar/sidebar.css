@@ -1,0 +1,32 @@
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-glass-bg-sm);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid var(--c-border);
+  transition: width 220ms ease;
+  flex-shrink: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 20;
+}
+
+.sidebar-link,
+.sidebar-group-toggle {
+  text-decoration: none;
+}
+
+.sidebar-link:hover,
+.sidebar-group-toggle:hover {
+  background: var(--c-btn-ghost-hover);
+  color: var(--c-text-1);
+}
+
+.sidebar-collapse-btn:hover {
+  background: var(--c-btn-ghost-hover);
+  color: var(--c-text-1);
+}

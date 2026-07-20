@@ -1,0 +1,257 @@
+.painel-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 20px;
+}
+
+.date-controls {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.date-quick-picks {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.date-quick-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 400;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  border: 1px solid var(--c-border-lg);
+  background: transparent;
+  color: var(--c-text-1);
+  white-space: nowrap;
+  transition: background 180ms ease, border-color 180ms ease;
+}
+
+.date-quick-btn.active {
+  border: none;
+  background: var(--gradient-btn-primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+.date-picker-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.date-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--c-input-bg);
+  border: 1px solid var(--c-input-border);
+  cursor: pointer;
+  font: inherit;
+  transition: border-color 200ms, box-shadow 200ms;
+}
+
+.date-picker:hover,
+.date-picker:focus-visible {
+  border-color: var(--c-input-border-focus);
+  box-shadow: 0 0 0 3px var(--c-input-ring);
+  outline: none;
+}
+
+.date-picker-icon {
+  color: var(--c-text-2);
+  flex-shrink: 0;
+}
+
+.date-picker-text {
+  font-size: 13px;
+  font-family: var(--font-sans);
+  color: var(--c-input-text);
+  white-space: nowrap;
+}
+
+.date-calendar-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 30;
+  width: 240px;
+  padding: 12px;
+  background: var(--c-bg-secondary);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--c-shadow-md);
+}
+
+.date-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.date-calendar-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--c-text-1);
+}
+
+.date-calendar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 6px;
+  background: var(--c-glass-bg-sm);
+  color: var(--c-text-2);
+  cursor: pointer;
+}
+
+.date-calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.date-calendar-weekdays span {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--c-text-3);
+}
+
+.date-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.date-calendar-day {
+  height: 30px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--c-glass-bg-sm);
+  color: var(--c-text-1);
+}
+
+.date-calendar-day.today {
+  box-shadow: inset 0 0 0 1.5px var(--c-input-border-focus);
+}
+
+.date-calendar-day.selected {
+  background: var(--gradient-btn-primary);
+  color: #fff;
+  box-shadow: none;
+}
+
+.stats-row {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  flex: 1;
+}
+
+.stats-divider {
+  align-self: stretch;
+  width: 1px;
+  margin: 4px 4px;
+  background: var(--c-border);
+  flex-shrink: 0;
+}
+
+.stat-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  background: var(--c-glass-bg-sm);
+  border: 1px solid var(--c-border);
+  min-width: 0;
+}
+
+.stat-tile-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--c-text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.stat-tile-value {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  font-family: var(--font-heading);
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* Desktop: mantém tudo em uma única linha, alinhado à direita — a fonte
+   encolhe suavemente com a largura da viewport em vez de quebrar linha. */
+@media (min-width: 1024px) {
+  .painel-toolbar {
+    flex-wrap: nowrap;
+  }
+
+  .date-controls {
+    gap: clamp(6px, 0.8vw, 12px);
+  }
+
+  .date-quick-btn {
+    padding: clamp(6px, 0.6vw, 8px) clamp(8px, 0.9vw, 12px);
+    font-size: clamp(11px, 0.75vw, 13px);
+  }
+
+  .date-picker {
+    padding: clamp(6px, 0.6vw, 8px) clamp(8px, 0.9vw, 12px);
+  }
+
+  .date-picker-text {
+    font-size: clamp(11px, 0.75vw, 13px);
+  }
+
+  .stats-row {
+    flex-wrap: nowrap;
+  }
+
+  .stat-tile {
+    padding: clamp(6px, 0.6vw, 10px) clamp(10px, 1.1vw, 16px);
+  }
+
+  .stat-tile-label {
+    font-size: clamp(9px, 0.6vw, 11px);
+  }
+
+  .stat-tile-value {
+    font-size: clamp(15px, 1.35vw, 22px);
+  }
+
+  .stats-divider {
+    margin: 4px clamp(2px, 0.4vw, 8px);
+  }
+}
