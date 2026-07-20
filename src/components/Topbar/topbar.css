@@ -1,0 +1,97 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 28px;
+  border-bottom: 1px solid var(--c-border);
+  background: var(--c-glass-bg-sm);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  gap: 16px;
+}
+
+.topbar-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.topbar-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: var(--c-avatar-bg);
+  color: var(--c-avatar-text);
+  border: 1px solid var(--c-avatar-border);
+  box-shadow: 0 0 0 2px var(--c-avatar-ring);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.topbar-profile-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  min-width: 0;
+}
+
+.topbar-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  color: var(--c-text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.topbar-role {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-xs);
+  color: var(--c-text-3);
+}
+
+.topbar-theme-switch {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius-full);
+  background: var(--c-glass-bg-sm);
+  border: 1px solid var(--c-border);
+  flex-shrink: 0;
+}
+
+.topbar-theme-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  color: var(--c-text-3);
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease;
+}
+
+.topbar-theme-btn:hover {
+  color: var(--c-text-1);
+  background: var(--c-btn-ghost-hover);
+}
+
+.topbar-theme-btn.active {
+  background: var(--gradient-accent);
+  color: #ffffff;
+  box-shadow: var(--c-shadow-accent);
+}

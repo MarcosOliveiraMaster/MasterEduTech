@@ -1,4 +1,4 @@
-name: Deploy Design System to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -24,19 +24,33 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
+      - name: Install app dependencies
+        run: npm install
+
+      - name: Build app (login + início)
+        run: npm run build
+
+      - name: Install design system dependencies
         working-directory: desing/edutech-design-system
         run: npm install
 
-      - name: Build
+      - name: Build design system
         working-directory: desing/edutech-design-system
         run: npm run build
+
+      - name: Merge design system build into /design
+        run: |
+          mkdir -p dist/design
+          cp -r desing/edutech-design-system/dist/. dist/design/
+
+      - name: SPA fallback for client-side routing (login/início)
+        run: cp dist/index.html dist/404.html
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: desing/edutech-design-system/dist
+          path: dist
 
   deploy:
     environment:
