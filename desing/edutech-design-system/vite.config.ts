@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react'
 // rota para este servidor — rode com `npm run dev` (porta fixa 5175).
 export default defineConfig({
   plugins: [react()],
-  base: '/MasterEduTech/design/',
+  base: process.env.VERCEL ? '/design/' : '/MasterEduTech/design/',
   server: {
     port: 5175,
     strictPort: true,
