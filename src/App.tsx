@@ -12,11 +12,13 @@ import { TabelaProfessoresPage } from './features/professores/TabelaProfessoresP
 import { BancoDeAulasPage } from './features/banco-de-aulas/BancoDeAulasPage'
 import { SimulacoesPage } from './features/simulacoes/SimulacoesPage'
 
+const ROUTER_BASENAME = import.meta.env.BASE_URL.replace(/\/$/, '') || '/'
+
 function App() {
   return (
     <ThemeProvider>
       <ToastProvider>
-        <BrowserRouter basename="/MasterEduTech">
+        <BrowserRouter basename={ROUTER_BASENAME}>
           <AuthProvider>
             <Routes>
               <Route path="/login" element={<LoginPage />} />

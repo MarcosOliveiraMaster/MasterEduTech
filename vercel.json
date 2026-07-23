@@ -1,0 +1,7 @@
+{
+  "buildCommand": "npm run build && npm --prefix desing/edutech-design-system install && npm --prefix desing/edutech-design-system run build && mkdir -p dist/design && cp -r desing/edutech-design-system/dist/. dist/design/",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
