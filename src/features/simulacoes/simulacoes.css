@@ -1,0 +1,123 @@
+.simulacoes-filtros-linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.simulacoes-filtros-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--c-border);
+}
+
+.simulacoes-grid-wrap {
+  padding: 20px;
+  border-radius: var(--radius-md);
+  background: var(--c-glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--c-shadow-md);
+}
+
+.simulacoes-resultado-header {
+  margin-bottom: 16px;
+}
+
+.simulacoes-resultado-contagem {
+  font-size: var(--font-size-sm);
+  color: var(--c-text-2);
+}
+
+.simulacoes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 700px) {
+  .simulacoes-grid { grid-template-columns: 1fr; }
+}
+
+.simulacao-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  min-width: 0;
+  border-radius: var(--radius-md);
+  background: var(--c-glass-bg-sm);
+  border: 1px solid var(--c-border);
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease;
+}
+
+.simulacao-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--c-input-border-focus);
+}
+
+.simulacao-card-especial {
+  border-color: var(--c-border-mint);
+  background: var(--c-badge-success-bg);
+}
+
+.simulacao-card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.simulacao-card-titulo {
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--c-text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.simulacao-card-codigo {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--c-text-3);
+}
+
+.simulacao-card-info-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--c-text-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.simulacao-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.simulacao-card-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  background: var(--c-badge-white-bg);
+  color: var(--c-badge-white-text);
+}
+
+.simulacao-card-badge-destaque {
+  background: var(--c-badge-blue-bg);
+  color: var(--c-badge-blue-text);
+}

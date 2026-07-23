@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FiCalendar, FiPlus, FiTrash2, FiLoader, FiMessageCircle } from 'react-icons/fi'
+import { FiCalendar, FiCopy, FiPlus, FiTrash2, FiLoader, FiMessageCircle } from 'react-icons/fi'
 import { BsChatSquareText, BsChatSquareTextFill } from 'react-icons/bs'
 import { GlassCard } from '../../../components/GlassCard'
 import { Button } from '../../../components/Button'
@@ -12,7 +12,7 @@ import { SearchableSelectModal } from './cell-editors/SearchableSelectModal'
 import { SimpleInputModal } from './cell-editors/SimpleInputModal'
 import { DatePickerModal } from './cell-editors/DatePickerModal'
 import { CalendarioVisualModal } from './CalendarioVisualModal'
-import { adicionarAula, fetchClientePorCpf, fetchProfessores, removerAulas, updateCampoAula } from '../queries'
+import { adicionarAula, copiarAula, fetchClientePorCpf, fetchProfessores, removerAulas, updateCampoAula } from '../queries'
 import { calcularValorAula, formatarMateriasMultiplas, getStatusColors } from '../helpers'
 import { DURACAO_OPTIONS, MATERIA_A_DEFINIR, MATERIA_OPTIONS, MAX_MATERIAS_SELECIONADAS, STATUS_OPTIONS } from '../types'
 import type { Aula, Cliente, Contrato, Professor } from '../types'
@@ -39,7 +39,9 @@ export const AulasAgendadasTable: React.FC<AulasAgendadasTableProps> = ({ contra
   const [observacaoAula, setObservacaoAula] = useState<Aula | null>(null)
   const [calendarioAberto, setCalendarioAberto] = useState(false)
   const [removerAberto, setRemoverAberto] = useState(false)
+  const [excluirAula, setExcluirAula] = useState<Aula | null>(null)
   const [adicionando, setAdicionando] = useState(false)
+  const [copiandoId, setCopiandoId] = useState<string | null>(null)
   const [salvandoSwitchId, setSalvandoSwitchId] = useState<string | null>(null)
   const [professores, setProfessores] = useState<Professor[] | null>(null)
   const [clienteContrato, setClienteContrato] = useState<Cliente | null | undefined>(undefined)
@@ -95,6 +97,19 @@ export const AulasAgendadasTable: React.FC<AulasAgendadasTableProps> = ({ contra
     }
   }
 
+  async function handleCopiarAula(aula: Aula) {
+    setCopiandoId(aula.id)
+    try {
+      await copiarAula(contrato.id, aula, aulas, horaAulaProfessor)
+      showToast('Aula copiada.', 'success')
+      onAulasAtualizadas()
+    } catch (e) {
+      showToast(e instanceof Error ? e.message : 'Erro ao copiar aula.', 'error')
+    } finally {
+      setCopiandoId(null)
+    }
+  }
+
   return (
     <GlassCard variant="default" style={{ marginTop: '16px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
@@ -110,14 +125,14 @@ export const AulasAgendadasTable: React.FC<AulasAgendadasTableProps> = ({ contra
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
           <thead>
             <tr style={{ background: 'var(--c-glass-bg-sm)', borderBottom: '1px solid var(--c-border)' }}>
-              {['Data', 'Horário', 'Duração', 'Matéria', 'Professor', 'Valor', 'Estudante', 'Status', 'Concluída', 'Relatório', 'Observações'].map(h => (
+              {['Data', 'Horário', 'Duração', 'Matéria', 'Professor', 'Valor', 'Estudante', 'Status', 'Concluída', 'Relatório', 'Observações', 'Ações'].map(h => (
                 <th key={h} style={{ padding: '8px 10px', textAlign: 'left', fontWeight: 600, whiteSpace: 'nowrap' }}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {aulas.length === 0 ? (
-              <tr><td colSpan={11} style={{ padding: '24px', textAlign: 'center', color: 'var(--c-text-3)' }}>Nenhuma aula agendada.</td></tr>
+              <tr><td colSpan={12} style={{ padding: '24px', textAlign: 'center', color: 'var(--c-text-3)' }}>Nenhuma aula agendada.</td></tr>
             ) : aulas.map(aula => {
               const colors = getStatusColors(aula.StatusAula)
               const temRelatorio = !!aula.RelatorioAula?.trim()
@@ -157,6 +172,14 @@ export const AulasAgendadasTable: React.FC<AulasAgendadasTableProps> = ({ contra
                     <button onClick={() => setObservacaoAula(aula)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: temObservacao ? '#22c55e' : 'var(--c-text-4)' }}>
                       <FiMessageCircle />
                     </button>
+                  </td>
+                  <td style={{ ...celTdStyle, textAlign: 'center' }}>
+                    {copiandoId === aula.id ? (
+                      <FiLoader style={{ animation: 'spin 0.7s linear infinite' }} />
+                    ) : (
+                      <button onClick={() => handleCopiarAula(aula)} title="Copiar aula" style={acaoBtnStyle}><FiCopy /></button>
+                    )}
+                    <button onClick={() => setExcluirAula(aula)} title="Excluir aula" style={{ ...acaoBtnStyle, color: 'var(--c-badge-error-text)' }}><FiTrash2 /></button>
                   </td>
                 </tr>
               )
@@ -258,12 +281,55 @@ export const AulasAgendadasTable: React.FC<AulasAgendadasTableProps> = ({ contra
       {removerAberto && (
         <RemoverAulaModal aulas={aulas} onClose={() => setRemoverAberto(false)} onRemoved={onAulasAtualizadas} />
       )}
+      {excluirAula && (
+        <ConfirmarExclusaoAulaModal aula={excluirAula} onClose={() => setExcluirAula(null)} onExcluida={onAulasAtualizadas} />
+      )}
     </GlassCard>
   )
 }
 
 const celTdStyle: React.CSSProperties = { padding: '6px 10px', whiteSpace: 'nowrap' }
 const celBtnStyle: React.CSSProperties = { background: 'none', border: 'none', cursor: 'pointer', color: 'var(--c-text-1)', fontSize: '12px', fontWeight: 500, padding: '4px 6px', borderRadius: 'var(--radius-sm)' }
+const acaoBtnStyle: React.CSSProperties = { background: 'none', border: 'none', cursor: 'pointer', color: 'var(--c-text-2)', padding: '4px 6px', display: 'inline-flex' }
+
+interface ConfirmarExclusaoAulaModalProps { aula: Aula; onClose: () => void; onExcluida: () => void }
+
+const ConfirmarExclusaoAulaModal: React.FC<ConfirmarExclusaoAulaModalProps> = ({ aula, onClose, onExcluida }) => {
+  const [excluindo, setExcluindo] = useState(false)
+  const { showToast } = useToast()
+
+  async function handleExcluir() {
+    setExcluindo(true)
+    try {
+      await removerAulas([aula.id])
+      showToast('Aula excluída.', 'success')
+      onExcluida()
+      onClose()
+    } catch {
+      showToast('Erro ao excluir aula.', 'error')
+    } finally {
+      setExcluindo(false)
+    }
+  }
+
+  return (
+    <Modal
+      title="Excluir Aula"
+      onClose={onClose}
+      size="sm"
+      footer={
+        <>
+          <Button variant="secondary" onClick={onClose} disabled={excluindo}>Cancelar</Button>
+          <Button variant="danger" onClick={handleExcluir} loading={excluindo}>Excluir</Button>
+        </>
+      }
+    >
+      <p style={{ margin: 0, fontSize: '13px', color: 'var(--c-text-2)' }}>
+        Excluir a aula de {aula.data || '--'} às {aula.horario || '--'}? Esta ação não pode ser desfeita.
+      </p>
+    </Modal>
+  )
+}
 
 interface ObservacaoAulaModalProps { aula: Aula; onClose: () => void; onSaved: () => void }
 

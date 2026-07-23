@@ -29,3 +29,11 @@ export function filtrarProfessores(professores: Professor[], filtros: FiltrosPro
     return true
   })
 }
+
+/** Monta o link do WhatsApp Web a partir do contato salvo (assume DDD+número no Brasil quando não há código do país). */
+export function linkWhatsapp(contato?: string): string | null {
+  const digitos = (contato || '').replace(/\D/g, '')
+  if (!digitos) return null
+  const numero = digitos.length <= 11 ? `55${digitos}` : digitos
+  return `https://wa.me/${numero}`
+}

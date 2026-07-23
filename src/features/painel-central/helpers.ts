@@ -1,5 +1,5 @@
 import type { Timestamp } from 'firebase/firestore'
-import type { Aula, Cliente } from './types'
+import type { Aula, Cliente, Professor } from './types'
 
 const DIAS_SEMANA = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb']
 export const MESES = [
@@ -229,4 +229,9 @@ export async function copyToClipboard(text: string): Promise<void> {
     document.execCommand('copy')
     document.body.removeChild(ta)
   }
+}
+
+/** Nomes distintos de professores para popular selects de filtro — a base tem CPFs/docs duplicados com o mesmo nome. */
+export function nomesProfessoresUnicos(professores: Professor[]): string[] {
+  return Array.from(new Set(professores.map(p => p.nome || '').filter(Boolean))).sort((a, b) => a.localeCompare(b))
 }

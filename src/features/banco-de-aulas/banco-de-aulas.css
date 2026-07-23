@@ -1,0 +1,175 @@
+.banco-aulas-filtros-linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.banco-aulas-filtros-extras {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--c-border);
+}
+
+.aulas-grid-wrap {
+  padding: 20px;
+  border-radius: var(--radius-md);
+  background: var(--c-glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--c-shadow-md);
+}
+
+.aulas-resultado-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.aulas-resultado-contagem {
+  font-size: var(--font-size-sm);
+  color: var(--c-text-2);
+}
+
+.aulas-legenda {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.aulas-legenda-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--c-text-3);
+}
+
+.aulas-legenda-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.aulas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 700px) {
+  .aulas-grid { grid-template-columns: 1fr; }
+}
+
+.aula-card-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background: var(--c-glass-bg-sm);
+  border: 1px solid var(--c-border);
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease;
+}
+
+.aula-card-compact:hover {
+  transform: translateY(-2px);
+  border-color: var(--c-input-border-focus);
+}
+
+.aula-card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.aula-card-titulo {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--c-text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.aula-card-codigo {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--c-text-3);
+}
+
+.aula-card-info-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--c-text-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.aula-card-progresso {
+  display: flex;
+  gap: 3px;
+  height: 6px;
+}
+
+.aula-card-progresso-seg {
+  flex: 1;
+  min-width: 4px;
+  border-radius: var(--radius-full);
+}
+
+.aula-card-progresso-vazio {
+  flex: 1;
+  border-radius: var(--radius-full);
+  background: var(--c-border);
+}
+
+.aula-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.aula-card-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.context-menu-aula {
+  min-width: 140px;
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--c-badge-error-text);
+  cursor: pointer;
+  text-align: left;
+  transition: background 150ms ease;
+}
+
+.context-menu-item:hover {
+  background: var(--c-badge-error-bg);
+}

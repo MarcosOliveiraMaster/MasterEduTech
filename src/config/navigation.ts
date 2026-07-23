@@ -78,7 +78,7 @@ export const NAV_ITEMS: NavItem[] = [
     icon: FiUserCheck,
     children: [
       { type: 'link', id: 'pesquisa', label: 'Pesquisa', path: '/dashboard/professores/pesquisa', icon: FiSearch },
-      { type: 'link', id: 'fichas', label: 'Fichas', path: '/dashboard/professores/fichas', icon: FiFileText },
+      { type: 'link', id: 'fichas', label: 'Tabela', path: '/dashboard/professores/fichas', icon: FiFileText },
       { type: 'link', id: 'selecao', label: 'Seleção', path: '/dashboard/professores/selecao', icon: FiCheckSquare },
       { type: 'link', id: 'analise', label: 'Análise', path: '/dashboard/professores/analise', icon: FiBarChart2 },
     ],

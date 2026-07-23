@@ -153,6 +153,43 @@ export async function adicionarAula(codigoContratacao: string, aulasAtuais: Aula
   return ref.id
 }
 
+/**
+ * Duplica uma aula existente, herdando todos os seus campos, com novo `id-Aula` incrementado
+ * a partir da última aula do contrato. Mesma semântica de `adicionarAula`, mas copiando os
+ * dados de `aulaOrigem` em vez de repetir os da última aula.
+ */
+export async function copiarAula(codigoContratacao: string, aulaOrigem: Aula, aulasAtuais: Aula[], horaAulaProfessor: number): Promise<string> {
+  if (aulasAtuais.length === 0) throw new Error('Não é possível copiar aula sem um cronograma existente.')
+  const ordenadas = [...aulasAtuais].sort((a, b) => (a['id-Aula'] || '').localeCompare(b['id-Aula'] || ''))
+  const ultima = ordenadas[ordenadas.length - 1]
+  const novoIdAula = incrementarIdAula(ultima['id-Aula'] || '')
+
+  const novaAula: Omit<Aula, 'id'> = {
+    'id-Aula': novoIdAula,
+    codigoContratacao,
+    nomeCliente: aulaOrigem.nomeCliente || '',
+    cpf: aulaOrigem.cpf || '',
+    clienteUid: aulaOrigem.clienteUid || '',
+    clientUid: aulaOrigem.clientUid || '',
+    professor: aulaOrigem.professor || '',
+    idProfessor: aulaOrigem.idProfessor || '',
+    professorUid: aulaOrigem.professorUid || '',
+    estudante: aulaOrigem.estudante || '',
+    duracao: aulaOrigem.duracao || '',
+    materia: aulaOrigem.materia || '',
+    data: aulaOrigem.data || '',
+    horario: aulaOrigem.horario || '',
+    StatusAula: 'Pendente',
+    ConfirmacaoProfessorAula: false,
+    RelatorioAula: '',
+    ObservacoesAula: '',
+    horaAulaProfessor,
+    ValorAula: calcularValorAula(aulaOrigem.duracao, horaAulaProfessor),
+  }
+  const ref = await addDoc(collection(db, 'BancoDeAulas-Lista'), novaAula)
+  return ref.id
+}
+
 /** Hard delete em lote (paridade com o legado — sem soft-delete). */
 export async function removerAulas(docIds: string[]): Promise<void> {
   const TAMANHO_LOTE = 499
@@ -172,6 +209,13 @@ export async function fetchClientePorCpf(cpf: string): Promise<Cliente | null> {
   if (snap.empty) return null
   const d = snap.docs[0]
   return { id: d.id, ...(d.data() as Omit<Cliente, 'id'>) }
+}
+
+export async function fetchTodosClientes(): Promise<Cliente[]> {
+  const snap = await getDocs(collection(db, 'cadastroClientes'))
+  const clientes: Cliente[] = []
+  snap.forEach(d => clientes.push({ id: d.id, ...(d.data() as Omit<Cliente, 'id'>) }))
+  return clientes
 }
 
 // ---- dataBaseProfessores ----

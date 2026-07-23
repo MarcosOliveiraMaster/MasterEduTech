@@ -8,6 +8,9 @@ import { LoginPage } from './pages/LoginPage'
 import { InicioPage } from './pages/InicioPage'
 import { PlaceholderPage } from './pages/PlaceholderPage'
 import { PesquisaProfessoresPage } from './features/professores/PesquisaProfessoresPage'
+import { TabelaProfessoresPage } from './features/professores/TabelaProfessoresPage'
+import { BancoDeAulasPage } from './features/banco-de-aulas/BancoDeAulasPage'
+import { SimulacoesPage } from './features/simulacoes/SimulacoesPage'
 
 function App() {
   return (
@@ -26,8 +29,8 @@ function App() {
                 }
               >
                 <Route path="/inicio" element={<InicioPage />} />
-                <Route path="/banco-de-aulas" element={<PlaceholderPage title="Banco de Aulas" />} />
-                <Route path="/simulacoes" element={<PlaceholderPage title="Simulações" />} />
+                <Route path="/banco-de-aulas" element={<BancoDeAulasPage />} />
+                <Route path="/simulacoes" element={<SimulacoesPage />} />
                 <Route path="/calendario-master" element={<PlaceholderPage title="Calendário Master" />} />
                 <Route path="/demandas" element={<PlaceholderPage title="Demandas" description="Fluxo de processos." />} />
 
@@ -35,7 +38,7 @@ function App() {
                 <Route path="/dashboard/clientes/clientes" element={<PlaceholderPage title="Clientes" />} />
                 <Route path="/dashboard/clientes/analise" element={<PlaceholderPage title="Análise" />} />
                 <Route path="/dashboard/professores/pesquisa" element={<PesquisaProfessoresPage />} />
-                <Route path="/dashboard/professores/fichas" element={<PlaceholderPage title="Fichas" />} />
+                <Route path="/dashboard/professores/fichas" element={<TabelaProfessoresPage />} />
                 <Route path="/dashboard/professores/selecao" element={<PlaceholderPage title="Seleção" />} />
                 <Route path="/dashboard/professores/analise" element={<PlaceholderPage title="Análise" />} />
 
